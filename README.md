@@ -41,5 +41,6 @@ Usage is quite straightforward, let have some user defined types like
 
 Then to generate a working tree the only code needed is the following
 
-    AutoTree generator = new AutoTree();
-    JTree tree = new JTree(generator.generate(new Test()));
+    AutoTree tree = new AutoTree();
+	  tree.generate(test);
+	  // now AutoTree is a JTree so you are free to use it
