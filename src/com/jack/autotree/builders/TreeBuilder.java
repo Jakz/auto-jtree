@@ -1,9 +1,9 @@
 package com.jack.autotree.builders;
 
 import com.jack.autotree.AutoTreeContext;
-import com.jack.autotree.nodes.TreeNode;
+import com.jack.autotree.nodes.AutoTreeNode;
 
 public interface TreeBuilder<T>
 {
-  TreeNode build(T source, AutoTreeContext context);
+  AutoTreeNode build(T source, AutoTreeContext context);
 }

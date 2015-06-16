@@ -2,7 +2,7 @@ package com.jack.autotree;
 
 import java.util.Stack;
 
-import com.jack.autotree.nodes.TreeNode;
+import com.jack.autotree.nodes.AutoTreeNode;
 import com.jack.autotree.proxies.ValueProxy;
 
 public class AutoTreeContext
@@ -16,7 +16,7 @@ public class AutoTreeContext
     proxies = new Stack<ValueProxy>();
   }
   
-  public <T> TreeNode build(T object)
+  public <T> AutoTreeNode build(T object)
   {
     return generator.build(object);
   }

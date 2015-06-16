@@ -2,11 +2,11 @@ package com.jack.autotree.builders;
 
 import com.jack.autotree.AutoTreeContext;
 import com.jack.autotree.nodes.BooleanNode;
-import com.jack.autotree.nodes.TreeNode;
+import com.jack.autotree.nodes.AutoTreeNode;
 
 public class BooleanTreeBuilder implements TreeBuilder<Boolean>
 {
-  public TreeNode build(Boolean source, AutoTreeContext context)
+  public AutoTreeNode build(Boolean source, AutoTreeContext context)
   {
     return new BooleanNode(context.peek());
   }

@@ -2,11 +2,11 @@ package com.jack.autotree.builders;
 
 import com.jack.autotree.AutoTreeContext;
 import com.jack.autotree.nodes.ShortNode;
-import com.jack.autotree.nodes.TreeNode;
+import com.jack.autotree.nodes.AutoTreeNode;
 
 public class ShortTreeBuilder implements TreeBuilder<Short>
 {
-  public TreeNode build(Short source, AutoTreeContext context)
+  public AutoTreeNode build(Short source, AutoTreeContext context)
   {
     return new ShortNode(context.peek());
   }

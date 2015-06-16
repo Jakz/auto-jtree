@@ -5,13 +5,13 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import com.jack.autotree.nodes.LeafNode;
-import com.jack.autotree.nodes.TreeNode;
+import com.jack.autotree.nodes.AutoTreeNode;
 
 public class AutoTreeModel implements TreeModel
 {
-  private final TreeNode root;
+  private final AutoTreeNode root;
   
-  AutoTreeModel(TreeNode root)
+  AutoTreeModel(AutoTreeNode root)
   {
     this.root = root;
   }
@@ -22,20 +22,20 @@ public class AutoTreeModel implements TreeModel
   @Override
   public int getChildCount(Object parent)
   {
-    return ((TreeNode)parent).size();
+    return ((AutoTreeNode)parent).getChildCount();
   }
   
   @Override public Object getChild(Object parent, int index)
   {
-    return ((TreeNode)parent).get(index);
+    return ((AutoTreeNode)parent).getChildAt(index);
   }
   
   @Override public int getIndexOfChild(Object parent, Object child)
   {
-    TreeNode tparent = (TreeNode)parent;
+    AutoTreeNode tparent = (AutoTreeNode)parent;
     
-    for (int i = 0; i < tparent.size(); ++i)
-      if (tparent.get(i) == child)
+    for (int i = 0; i < tparent.getChildCount(); ++i)
+      if (tparent.getChildAt(i) == child)
         return i;
     
     return 0;

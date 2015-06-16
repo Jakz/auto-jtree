@@ -3,17 +3,24 @@ package com.jack.autotree;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+import javax.swing.JTree;
+
 
 import com.jack.autotree.builders.*;
-import com.jack.autotree.nodes.TreeNode;
+import com.jack.autotree.nodes.AutoTreeNode;
 
-public class AutoTree
+public class AutoTree extends JTree
 {
   final private Map<Class<?>, TreeBuilder<?>> builders;
   final private AutoTreeContext context;
   
   public AutoTree()
   {
+    super();
+    
     builders = new HashMap<Class<?>, TreeBuilder<?>>();
     context = new AutoTreeContext(this);
     
@@ -25,14 +32,22 @@ public class AutoTree
     builders.put(Character.class, new CharacterTreeBuilder());
     builders.put(Long.class, new LongTreeBuilder());
     builders.put(Boolean.class, new BooleanTreeBuilder());
+    
+    setCellEditor(new AutoTreeCellEditor(this));
   }
   
-  public <T> AutoTreeModel generate(T o)
+  @Override
+  public boolean isPathEditable(TreePath path)
   {
-    return new AutoTreeModel(build(o));
+    return isEditable() && getModel().isLeaf(path.getLastPathComponent());
   }
   
-  @SuppressWarnings("unchecked") <T> TreeNode build(T o)
+  public <T> void generate(T o)
+  {
+    setModel(new DefaultTreeModel(build(o), false));
+  }
+  
+  @SuppressWarnings("unchecked") <T> AutoTreeNode build(T o)
   {
     Class<?> clazz = o.getClass();
     	    

@@ -4,13 +4,13 @@ import java.util.List;
 
 import com.jack.autotree.AutoTreeContext;
 import com.jack.autotree.nodes.InnerNode;
-import com.jack.autotree.nodes.TreeNode;
+import com.jack.autotree.nodes.AutoTreeNode;
 import com.jack.autotree.proxies.FieldProxy;
 import com.jack.autotree.proxies.ListProxy;
 
 public class TreeBuilderList<T> implements TreeBuilder<List<T>>
 {
-  public TreeNode build(List<T> source, AutoTreeContext context)
+  public AutoTreeNode build(List<T> source, AutoTreeContext context)
   {
     InnerNode node = null;
     

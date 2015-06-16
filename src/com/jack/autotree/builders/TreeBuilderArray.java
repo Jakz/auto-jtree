@@ -2,13 +2,13 @@ package com.jack.autotree.builders;
 
 import com.jack.autotree.AutoTreeContext;
 import com.jack.autotree.nodes.InnerNode;
-import com.jack.autotree.nodes.TreeNode;
+import com.jack.autotree.nodes.AutoTreeNode;
 import com.jack.autotree.proxies.ArrayProxy;
 import com.jack.autotree.proxies.FieldProxy;
 
 public class TreeBuilderArray<T> implements TreeBuilder<T[]>
 {
-  public TreeNode build(T[] source, AutoTreeContext context)
+  public AutoTreeNode build(T[] source, AutoTreeContext context)
   {
     InnerNode node = null;
     

@@ -1,13 +1,32 @@
 package com.jack.autotree.tests;
 
-import javax.swing.tree.*;
+import java.util.*;
 import javax.swing.*;
 
 import com.jack.autotree.AutoTree;
 
 public class Main
 {
-	public static class Test
+	public static class Inner2
+	{
+	  public Boolean x[] = new Boolean[]{true, false, false};
+	  public int t = 20;
+	}
+  
+  public static class Inner
+	{
+    public List<Double> values;
+    public Inner2 inner[] = new Inner2[] { new Inner2(), new Inner2() };
+	  
+	  Inner()
+	  {
+	    values = new ArrayList<Double>();
+	    values.add(10.0);
+	    values.add(20.0);
+	  }
+	}
+  
+  public static class Test
 	{
 	  
 	  public float fx = 20.0f;
@@ -18,14 +37,17 @@ public class Main
 	  
 	  public int ix = 50;
 	  public Integer iy = 70;
+	  
+	  public Inner inner = new Inner();
 	}
 	
 	public static void main(String[] args)
 	{
 	  Test test = new Test();
 
-	  AutoTree generator = new AutoTree();
-	  new TreeFrame(generator.generate(test));
+	  AutoTree tree = new AutoTree();
+	  tree.generate(test);
+	  new TreeFrame(tree);
 	}
 	
 	public static class TreeFrame extends JFrame
@@ -33,9 +55,10 @@ public class Main
 	  public JTree tree;
 	  public JScrollPane pane;
 	  
-	  public TreeFrame(TreeModel model)
+	  public TreeFrame(JTree tree)
 	  {
-	    tree = new JTree(model);
+	    this.tree = tree;
+	    tree.setEditable(true);
 	    pane = new JScrollPane(tree);
 	    getContentPane().add(pane);
 	    pack();
