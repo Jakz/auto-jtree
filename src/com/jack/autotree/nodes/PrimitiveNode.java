@@ -17,4 +17,7 @@ public abstract class PrimitiveNode<T> extends LeafNode
   @Override
   @SuppressWarnings("unchecked")
   public void setUserObject(Object object) { setValue((T)object); }
+  
+  @Override
+  public boolean isEditable() { return proxy.isEditable(); }
 }

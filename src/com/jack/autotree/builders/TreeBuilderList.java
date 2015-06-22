@@ -21,7 +21,7 @@ public class TreeBuilderList<T> implements TreeBuilder<List<T>>
     
     for (int i = 0; i < source.size(); ++i)
     {
-      context.push(new ListProxy(source, i));
+      context.push(new ListProxy(source, i, true));
       node.add(context.build(source.get(i)));
       context.pop();
     }

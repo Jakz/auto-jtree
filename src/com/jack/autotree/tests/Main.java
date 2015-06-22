@@ -3,6 +3,7 @@ package com.jack.autotree.tests;
 import java.util.*;
 import javax.swing.*;
 
+import com.jack.autotree.annotations.*;
 import com.jack.autotree.AutoTree;
 
 public class Main
@@ -28,7 +29,6 @@ public class Main
   
   public static class Test
 	{
-	  
 	  public float fx = 20.0f;
 	  public Float fy = 30.0f;
 

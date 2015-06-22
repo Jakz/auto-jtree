@@ -1,6 +1,7 @@
 package com.jack.autotree.proxies;
 
 import java.lang.reflect.Field;
+import com.jack.autotree.annotations.*;
 
 public class FieldProxy implements ValueProxy
 {
@@ -40,4 +41,9 @@ public class FieldProxy implements ValueProxy
   }
   
   public String mnemonic() { return field.getName(); }
+  
+  public boolean isEditable()
+  {
+    return field.getAnnotation(NonEditable.class) == null;
+  }
 }

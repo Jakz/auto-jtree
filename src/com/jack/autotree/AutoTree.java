@@ -39,7 +39,9 @@ public class AutoTree extends JTree
   @Override
   public boolean isPathEditable(TreePath path)
   {
-    return isEditable() && getModel().isLeaf(path.getLastPathComponent());
+    AutoTreeNode node = (AutoTreeNode)path.getLastPathComponent();
+    
+    return isEditable() && node.isEditable();
   }
   
   public <T> void generate(T o)

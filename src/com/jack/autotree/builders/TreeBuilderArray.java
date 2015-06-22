@@ -19,7 +19,7 @@ public class TreeBuilderArray<T> implements TreeBuilder<T[]>
     
     for (int i = 0; i < source.length; ++i)
     {
-      context.push(new ArrayProxy(source, i));
+      context.push(new ArrayProxy(source, i, true));
       node.add(context.build(source[i]));
       context.pop();
     }

@@ -28,4 +28,6 @@ public abstract class AutoTreeNode implements MutableTreeNode
   public void remove(MutableTreeNode node) { }
   public void insert(MutableTreeNode node, int index) { }
   public void setUserObject(Object object) { System.out.println(object.getClass()); }
+  
+  public boolean isEditable() { return false; }
 }

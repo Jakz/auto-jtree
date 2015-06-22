@@ -5,4 +5,5 @@ public interface ValueProxy
   <T> T get();
   <T> void set(T value);
   String mnemonic();
+  boolean isEditable();
 }
