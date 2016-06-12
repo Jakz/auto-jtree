@@ -1,67 +1,95 @@
 package com.jack.autotree.tests;
 
+import java.awt.BorderLayout;
 import java.util.*;
 import javax.swing.*;
 
-import com.jack.autotree.annotations.*;
 import com.jack.autotree.AutoTree;
 
 public class Main
 {
-	public static class Inner2
-	{
-	  public Boolean x[] = new Boolean[]{true, false, false};
-	  public int t = 20;
-	}
+  public static class Point
+  {
+    public float x;
+    public float y;
+    
+    Point(float x, float y)
+    {
+      this.x = x;
+      this.y = y;
+    }
+  }
   
-  public static class Inner
+  public static class Point3D extends Point
+  {
+    public float z;
+    
+    Point3D(float x, float y, float z)
+    {
+      super(x,y);
+      this.z = z;
+    }
+  }
+  
+	public static class Triangle
 	{
-    public List<Double> values;
-    public Inner2 inner[] = new Inner2[] { new Inner2(), new Inner2() };
-	  
-	  Inner()
+	  public Point3D p1, p2, p3;
+	  Triangle()
 	  {
-	    values = new ArrayList<Double>();
-	    values.add(10.0);
-	    values.add(20.0);
+	    p1 = new Point3D(10,20,30);
+	    p2 = new Point3D(20,20,30);
+	    p3 = new Point3D(30,20,30);
+	  }
+	}
+	
+	public static class Shape
+	{
+	  public List<Point> points;
+	  
+	  Shape()
+	  {
+	    points = new ArrayList<Point>();
+	    points.add(new Point3D(10,20,30));
+	    points.add(new Point(10,20));
 	  }
 	}
   
   public static class Test
 	{
-	  public float fx = 20.0f;
-	  public Float fy = 30.0f;
-
-	  public boolean bx = false;
-	  public Boolean by = Boolean.TRUE;
-	  
-	  public int ix = 50;
-	  public Integer iy = 70;
-	  
-	  public Inner inner = new Inner();
+	  //public Shape shape = new Shape();
+	  public Triangle triangle = new Triangle();
+	  public MapSurface surface = new MapSurface();
 	}
 	
 	public static void main(String[] args)
 	{
-	  Test test = new Test();
+	  //Test test = new Test();
+	  MapSurface test = new MapSurface();
 
 	  AutoTree tree = new AutoTree();
-	  tree.generate(test);
+	  tree.generate(test, MapSurface.class);
 	  new TreeFrame(tree);
 	}
 	
 	public static class TreeFrame extends JFrame
 	{
-	  public JTree tree;
+	  public AutoTree tree;
 	  public JScrollPane pane;
+	  public JButton btAdd = new JButton("+");
 	  
-	  public TreeFrame(JTree tree)
+	  public TreeFrame(AutoTree tree)
 	  {
+	    btAdd.addActionListener(e -> tree.extendElement(tree.getSelectionPath()));
+	    
 	    this.tree = tree;
 	    tree.setEditable(true);
 	    pane = new JScrollPane(tree);
-	    getContentPane().add(pane);
+	    pane.setPreferredSize(new java.awt.Dimension(800,800));
+	    setLayout(new BorderLayout());
+	    add(pane, BorderLayout.CENTER);
+	    add(btAdd, BorderLayout.SOUTH);
 	    pack();
+	    this.setLocationRelativeTo(null);
 	    setVisible(true);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	  }

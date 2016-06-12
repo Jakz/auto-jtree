@@ -1,6 +1,5 @@
 package com.jack.autotree;
 
-import javax.swing.event.*;
 import javax.swing.tree.*;
 import javax.swing.*;
 
@@ -31,7 +30,7 @@ public class AutoTreeCellEditor extends DefaultTreeCellEditor
   private static class InnerEditor extends DefaultTreeCellEditor
   {
     JTextField field;
-    JComboBox booleanBox;
+    JComboBox<String> booleanBox;
     Class<?> clazz;
     boolean ignoreValue;
     
@@ -55,7 +54,7 @@ public class AutoTreeCellEditor extends DefaultTreeCellEditor
       field = new JTextField(15);
       field.addActionListener(doneAction);
       
-      booleanBox = new JComboBox(new String[]{"true", "false"});
+      booleanBox = new JComboBox<>(new String[]{"true", "false"});
       booleanBox.addActionListener(doneAction);
       
       ignoreValue = false;
@@ -71,6 +70,11 @@ public class AutoTreeCellEditor extends DefaultTreeCellEditor
         {
           booleanBox.setSelectedItem(((PrimitiveNode<?>)value).getValue().toString());
           return booleanBox;
+        }
+        else if (value instanceof StringNode)
+        {
+          field.setText(((StringNode)value).getValue());
+          return field;
         }
         else
         {
@@ -100,6 +104,8 @@ public class AutoTreeCellEditor extends DefaultTreeCellEditor
           return field.getText().length() == 1;
         else if (clazz == LongNode.class)
           Long.valueOf(field.getText());
+        else if (clazz == StringNode.class)
+          return true;
         
       }
       catch (NumberFormatException e)
@@ -131,6 +137,8 @@ public class AutoTreeCellEditor extends DefaultTreeCellEditor
         return Long.valueOf(field.getText());
       else if (clazz == BooleanNode.class)
         return Boolean.valueOf((String)booleanBox.getSelectedItem());
+      else if (clazz == StringNode.class)
+        return field.getText();
       else
         return null;
     }

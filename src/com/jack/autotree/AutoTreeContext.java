@@ -16,9 +16,9 @@ public class AutoTreeContext
     proxies = new Stack<ValueProxy>();
   }
   
-  public <T> AutoTreeNode build(T object)
+  public <T> AutoTreeNode build(Object object, Class<T> clazz)
   {
-    return generator.build(object);
+    return generator.build(object, clazz);
   }
   
   public void push(ValueProxy proxy)
@@ -35,4 +35,6 @@ public class AutoTreeContext
   {
     return proxies.peek();
   }
+  
+  public boolean isEmpty() { return proxies.isEmpty(); }
 }

@@ -3,15 +3,16 @@ package com.jack.autotree.proxies;
 import java.lang.reflect.Field;
 import com.jack.autotree.annotations.*;
 
-public class FieldProxy implements ValueProxy
+public class FieldProxy extends ValueProxy
 {
+  private final Object object;
   private final Field field;
-  private final Object parent;
   
-  public FieldProxy(Object parent, Field field)
+  public FieldProxy(ValueProxy parent, Object object, Field field)
   {
+    super(parent);
+    this.object = object;
     this.field = field;
-    this.parent = parent;
   }
   
   @SuppressWarnings("unchecked")
@@ -19,7 +20,7 @@ public class FieldProxy implements ValueProxy
   {
     try
     {
-      return (T)field.get(parent);
+      return (T)field.get(object);
     }
     catch (IllegalAccessException e)
     {
@@ -32,7 +33,7 @@ public class FieldProxy implements ValueProxy
   {
     try
     {
-      field.set(parent, value);
+      field.set(object, value);
     }
     catch (IllegalAccessException e)
     {
@@ -46,4 +47,6 @@ public class FieldProxy implements ValueProxy
   {
     return field.getAnnotation(NonEditable.class) == null;
   }
+  
+  public Class<?> getType() { return field.getType(); }
 }

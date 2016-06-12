@@ -23,11 +23,14 @@ public abstract class AutoTreeNode implements MutableTreeNode
   public AutoTreeNode getParent() { return parent; }
   public int getIndex(TreeNode node) { return getIndex((AutoTreeNode)node); }
   
-  public void removeFromParent() { }
+  public void removeFromParent() { getParent().remove(this); }
+  
   public void remove(int index) { }
   public void remove(MutableTreeNode node) { }
   public void insert(MutableTreeNode node, int index) { }
   public void setUserObject(Object object) { System.out.println(object.getClass()); }
   
   public boolean isEditable() { return false; }
+  
+  public boolean isExtensible() { return false; }
 }

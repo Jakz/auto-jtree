@@ -1,9 +1,16 @@
 package com.jack.autotree.proxies;
 
-public interface ValueProxy
+public abstract class ValueProxy
 {
-  <T> T get();
-  <T> void set(T value);
-  String mnemonic();
-  boolean isEditable();
+  public final ValueProxy parent;
+  
+  ValueProxy(ValueProxy parent)
+  {
+    this.parent = parent;
+  }
+  
+  abstract public <T> T get();
+  abstract public <T> void set(T value);
+  abstract public String mnemonic();
+  abstract public boolean isEditable();
 }

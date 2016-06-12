@@ -1,28 +1,36 @@
 package com.jack.autotree.proxies;
 
-public class ArrayProxy implements ValueProxy
+import com.jack.autotree.nodes.InnerNode;
+
+public class ArrayProxy extends ValueProxy
 {
-  private final Object parent;
   private final int index;
   private final boolean isEditable;
+  private final InnerNode parentNode;
   
-  public ArrayProxy(Object parent, int index, boolean isEditable)
+  public ArrayProxy(ValueProxy parent, InnerNode parentNode, int index, boolean isEditable)
   {
-    this.parent = parent;
+    super(parent);
     this.index = index;
     this.isEditable = isEditable;
+    this.parentNode = parentNode;
+  }
+  
+  public InnerNode getParentNode()
+  {
+    return parentNode;
   }
   
   @SuppressWarnings("unchecked")
   public <T> T get()
   {
-    return ((T[])parent)[index];
+    return ((T[])parent.get())[index];
   }
   
   @SuppressWarnings("unchecked")
   public <T> void set(T value)
   {
-    ((T[])parent)[index] = value;
+    ((T[])parent.get())[index] = value;
   }
   
   public String mnemonic() { return "["+index+"]"; }

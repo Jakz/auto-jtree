@@ -4,17 +4,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+import javax.swing.tree.MutableTreeNode;
 
 public class InnerNode extends AutoTreeNode
 {
-  private final List<AutoTreeNode> children;
-  private final Object object;
-  private String caption;
+  protected final List<AutoTreeNode> children;
+  protected Object object;
+  protected String caption;
   
   public InnerNode(Object object)
   {
     this.object = object;
     children = new ArrayList<AutoTreeNode>();
+    
   }
   
   public InnerNode(String caption, Object object)
@@ -56,11 +58,29 @@ public class InnerNode extends AutoTreeNode
   
   @Override public String mnemonic()
   {
-    return caption != null ? caption : object.toString();
+    return caption != null ? caption : object.getClass().getSimpleName();
   }
   
   public void add(AutoTreeNode child)
   {
     children.add(child);
+  }
+  
+  @Override
+  public void remove(int index)
+  {
+    children.remove(index);
+  }
+  
+  @Override
+  public void remove(MutableTreeNode node)
+  {
+    children.remove((AutoTreeNode)node);
+  }
+  
+  @Override
+  public void insert(MutableTreeNode node, int index)
+  {
+    children.add(index, (AutoTreeNode)node);
   }
 }

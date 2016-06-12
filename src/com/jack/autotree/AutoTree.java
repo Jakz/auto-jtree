@@ -3,7 +3,6 @@ package com.jack.autotree;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.JTree;
@@ -24,18 +23,28 @@ public class AutoTree extends JTree
     builders = new HashMap<Class<?>, TreeBuilder<?>>();
     context = new AutoTreeContext(this);
     
+    builders.put(Float.TYPE, new FloatTreeBuilder());
     builders.put(Float.class, new FloatTreeBuilder());
+    builders.put(Double.TYPE, new DoubleTreeBuilder());
     builders.put(Double.class, new DoubleTreeBuilder());
+    builders.put(Integer.TYPE, new IntegerTreeBuilder());
     builders.put(Integer.class, new IntegerTreeBuilder());
+    builders.put(Byte.TYPE, new ByteTreeBuilder());
     builders.put(Byte.class, new ByteTreeBuilder());
+    builders.put(Short.TYPE, new ShortTreeBuilder());
     builders.put(Short.class, new ShortTreeBuilder());
+    builders.put(Character.TYPE, new CharacterTreeBuilder());
     builders.put(Character.class, new CharacterTreeBuilder());
+    builders.put(Long.TYPE, new LongTreeBuilder());
     builders.put(Long.class, new LongTreeBuilder());
+    builders.put(Boolean.TYPE, new BooleanTreeBuilder());
     builders.put(Boolean.class, new BooleanTreeBuilder());
+    builders.put(String.class, new StringTreeBuilder());
+
     
     setCellEditor(new AutoTreeCellEditor(this));
   }
-  
+    
   @Override
   public boolean isPathEditable(TreePath path)
   {
@@ -44,37 +53,65 @@ public class AutoTree extends JTree
     return isEditable() && node.isEditable();
   }
   
-  public <T> void generate(T o)
+  public <T> void generate(T o, Class<T> clazz)
   {
-    setModel(new DefaultTreeModel(build(o), false));
+    setModel(new DefaultTreeModel(build(o, clazz), false));
   }
   
-  @SuppressWarnings("unchecked") <T> AutoTreeNode build(T o)
+  private <T> AutoTreeNode build(T[] o, Class<T> clazz)
   {
-    Class<?> clazz = o.getClass();
-    	    
-    if (clazz.isArray())
+    Logger.logger.log("Generating array tree for "+clazz.getName()+"[]");
+    TreeBuilderArray<T[], T> builder = new TreeBuilderArray<>(clazz);
+    return builder.build(o, context);
+  }
+  
+  private <T> AutoTreeNode build(List<T> o, Class<T> clazz)
+  {
+    TreeBuilderList<T> builder = new TreeBuilderList<>(clazz);
+    return builder.build(o, context);
+  }
+  
+  @SuppressWarnings("unchecked")
+  protected <T> AutoTreeNode build(Object o, Class<T> clazz)
+  {
+    //Class<?> clazz = o.getClass();
+    TreeBuilder<?> nativeBuilder = builders.get(clazz);
+  
+    if (nativeBuilder == null && o == null)
     {
-      TreeBuilderArray<T> builder = new TreeBuilderArray<T>();
-      return ((TreeBuilderArray<T>)builder).build((T[])o, context);
+      Logger.logger.log("Generating null node for "+clazz.getName());
+      return new NullTreeBuilder<T>(clazz).build(null, context);
     }
-    else if (List.class.isAssignableFrom(clazz))
+    else if (o != null && o.getClass().isArray())
     {
-      TreeBuilderList<T> builder = new TreeBuilderList<T>();
-      return ((TreeBuilderList<T>)builder).build((List<T>)o, context);
+      return build((T[])o, clazz);
+    }
+    else if (o != null && List.class.isAssignableFrom(o.getClass()))
+    {
+      return build((List<T>)o, clazz);
     }
     else
     {
-      TreeBuilder<?> builder = builders.get(clazz);
+      Logger.logger.log("Generating reflective tree for "+clazz.getName());
+      
+      TreeBuilder<?> builder = nativeBuilder;
       
       if (builder == null)
       {
-   
-        builder = new TreeBuilderReflective<T>();
+        builder = new TreeBuilderReflective<T>(clazz);
         builders.put(clazz, builder);
       }
               
-      return ((TreeBuilder<T>)builder).build(o, context);
+      return ((TreeBuilder<T>)builder).build((T)o, context);
     }
+  }
+  
+  public boolean extendElement(TreePath path)
+  {
+    AutoTreeNode node = (AutoTreeNode)path.getLastPathComponent();
+    
+    System.out.println(path+" extensible: "+node.isExtensible());
+    
+    return true;
   }
 }
