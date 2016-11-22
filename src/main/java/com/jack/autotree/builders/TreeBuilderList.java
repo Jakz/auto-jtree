@@ -6,6 +6,7 @@ import java.util.List;
 import com.jack.autotree.AutoTreeContext;
 import com.jack.autotree.nodes.InnerNode;
 import com.jack.autotree.nodes.AutoTreeNode;
+import com.jack.autotree.nodes.InnerListNode;
 import com.jack.autotree.proxies.FieldProxy;
 import com.jack.autotree.proxies.ListProxy;
 
@@ -23,9 +24,9 @@ public class TreeBuilderList<T> extends TreeBuilderGeneric<List<T>, T>
     InnerNode node = null;
     
     if (context.peek() instanceof FieldProxy)
-      node = new InnerNode(((FieldProxy)context.peek()).mnemonic(), source);
+      node = new InnerListNode(((FieldProxy)context.peek()).mnemonic(), source, getClazz());
     else
-      node = new InnerNode(source);
+      node = new InnerListNode(source, getClazz());
     
     for (int i = 0; i < source.size(); ++i)
     {

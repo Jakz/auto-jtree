@@ -8,10 +8,5 @@ public abstract class LeafNode extends AutoTreeNode
   @Override public AutoTreeNode getChildAt(int index) { return null; }
   @Override public boolean isLeaf() { return true; }
   @Override public int getIndex(AutoTreeNode node) { return -1; }
-  @SuppressWarnings("rawtypes")
-  @Override
-  public Enumeration children()
-  {
-    return null;
-  }
+  @Override public Enumeration<AutoTreeNode> children() { return null; }
 }

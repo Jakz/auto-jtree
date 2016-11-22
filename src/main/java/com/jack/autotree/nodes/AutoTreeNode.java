@@ -24,9 +24,9 @@ public abstract class AutoTreeNode implements MutableTreeNode, Iterable<AutoTree
   abstract String mnemonic();
   public String toString() { return mnemonic(); }
   
-  public void setParent(MutableTreeNode node) { this.parent = (AutoTreeNode)node; }
-  public AutoTreeNode getParent() { return parent; }
-  public int getIndex(TreeNode node) { return getIndex((AutoTreeNode)node); }
+  @Override public void setParent(MutableTreeNode node) { this.parent = (AutoTreeNode)node; }
+  @Override public AutoTreeNode getParent() { return parent; }
+  @Override public int getIndex(TreeNode node) { return getIndex((AutoTreeNode)node); }
   
   public void removeFromParent() { getParent().remove(this); }
   
@@ -38,4 +38,15 @@ public abstract class AutoTreeNode implements MutableTreeNode, Iterable<AutoTree
   public boolean isEditable() { return false; }
   
   public boolean isExtensible() { return false; }
+  
+  public void clear()
+  {
+    throw new UnsupportedOperationException("clear() is unsupported on node type '"+this.getClass().getCanonicalName()+"'"); 
+  }
+  
+  public void addElement(int index)
+  {
+    throw new UnsupportedOperationException("addElement() is unsupported on node type '"+this.getClass().getCanonicalName()+"'"); 
+
+  }
 }

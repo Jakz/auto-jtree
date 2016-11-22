@@ -9,6 +9,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 
@@ -87,5 +90,17 @@ public class AppTest
         assertThat(innerChild, instanceOf(IntegerNode.class));
       }
     }
+  }
+  
+  @Test
+  public void testCollectionList()
+  {
+    AutoTreeBuilder builder = new AutoTreeBuilder();
+    List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+    TreeModel model = builder.generate(list, List.class); 
+    AutoTreeNode root = (AutoTreeNode)model.getRoot();
+
+    assertNotNull(model.getRoot());
+    assertEquals(model.getChildCount(root), 5);
   }
 }
