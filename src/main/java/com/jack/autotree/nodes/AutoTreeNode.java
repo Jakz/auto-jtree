@@ -3,8 +3,9 @@ package com.jack.autotree.nodes;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.MutableTreeNode;
 import java.util.Enumeration;
+import java.util.Iterator;
 
-public abstract class AutoTreeNode implements MutableTreeNode
+public abstract class AutoTreeNode implements MutableTreeNode, Iterable<AutoTreeNode>
 {
   protected AutoTreeNode parent;
   
@@ -12,9 +13,13 @@ public abstract class AutoTreeNode implements MutableTreeNode
   abstract public AutoTreeNode getChildAt(int index);
   abstract public boolean isLeaf();
   abstract public int getIndex(AutoTreeNode node);
-  @SuppressWarnings("rawtypes")
-  abstract public Enumeration children();
+  abstract public Enumeration<AutoTreeNode> children();
   public boolean getAllowsChildren() { return false; }
+  
+  public Iterator<AutoTreeNode> iterator()
+  { 
+    throw new UnsupportedOperationException("Iteration is unsupported on node type '"+this.getClass().getCanonicalName()+"'"); 
+  }
   
   abstract String mnemonic();
   public String toString() { return mnemonic(); }

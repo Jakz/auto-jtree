@@ -45,7 +45,7 @@ public class AutoTreeModel implements TreeModel
     return object instanceof LeafNode;
   }
   
-  @Override public Object getRoot() { return root; }
+  @Override public AutoTreeNode getRoot() { return root; }
   
   @Override public void valueForPathChanged(TreePath path, Object newValue) { }
 }

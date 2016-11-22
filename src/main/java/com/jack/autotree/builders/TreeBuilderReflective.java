@@ -29,22 +29,28 @@ public class TreeBuilderReflective<T> extends TreeBuilderGeneric<T, T>
     
     Class<?> clazz = getClazz();//source.getClass();// getClazz();
     
-    while (clazz != null)
-    {
-      clazzes.push(clazz);
-      clazz = clazz.getSuperclass();
-    }
-        
-    ValueProxy parentProxy = !context.isEmpty() ? context.peek() : null;
-
     try
-    {  
+    {             
+      while (clazz != null)
+      {
+        clazzes.push(clazz);
+        clazz = clazz.getSuperclass();
+      }
+          
+      ValueProxy parentProxy = !context.isEmpty() ? context.peek() : null;
+
       if (source != null)
       {
         InnerNode node = new InnerNode(source);
         while (!clazzes.isEmpty())
         {
           Class<?> currentClass = clazzes.pop();
+          
+          if ((currentClass.getModifiers() & Modifier.PUBLIC) == 0)
+            throw new IllegalAccessException("Class '"+currentClass.getCanonicalName()+"' must be public to be accessed from tree builder");
+          if (currentClass.isMemberClass() && (currentClass.getModifiers() & Modifier.STATIC) == 0)
+            throw new IllegalAccessException("Class '"+currentClass.getCanonicalName()+"' must be static to be accessed from tree builder");
+  
           Field[] fields = currentClass.getDeclaredFields();
   
           for (Field field : fields)

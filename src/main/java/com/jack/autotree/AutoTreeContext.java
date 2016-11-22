@@ -7,10 +7,10 @@ import com.jack.autotree.proxies.ValueProxy;
 
 public class AutoTreeContext
 {
-  private final AutoTree generator;
+  private final AutoTreeBuilder generator;
   private final Stack<ValueProxy> proxies;
   
-  AutoTreeContext(AutoTree generator)
+  AutoTreeContext(AutoTreeBuilder generator)
   {
     this.generator = generator;
     proxies = new Stack<ValueProxy>();

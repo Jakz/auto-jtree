@@ -3,10 +3,11 @@ package com.jack.autotree.nodes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import javax.swing.tree.MutableTreeNode;
 
-public class InnerNode extends AutoTreeNode
+public class InnerNode extends AutoTreeNode implements Iterable<AutoTreeNode>
 {
   protected final List<AutoTreeNode> children;
   protected Object object;
@@ -49,9 +50,13 @@ public class InnerNode extends AutoTreeNode
     return -1;
   }
   
-  @SuppressWarnings("rawtypes")
+  @Override public Iterator<AutoTreeNode> iterator()
+  {
+    return children.iterator();
+  }
+  
   @Override
-  public Enumeration children()
+  public Enumeration<AutoTreeNode> children()
   {
     return Collections.enumeration(children);
   }
