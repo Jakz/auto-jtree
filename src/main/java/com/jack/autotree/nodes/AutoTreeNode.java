@@ -1,22 +1,38 @@
 package com.jack.autotree.nodes;
 
 import javax.swing.tree.TreeNode;
+
+import com.jack.autotree.proxies.ValueProxy;
+
 import javax.swing.tree.MutableTreeNode;
 import java.util.Enumeration;
 import java.util.Iterator;
 
-public abstract class AutoTreeNode implements MutableTreeNode, Iterable<AutoTreeNode>
+public abstract class AutoTreeNode<T> implements MutableTreeNode, Iterable<AutoTreeNode<?>>
 {
   protected AutoTreeNode parent;
+  protected ValueProxy proxy;
   
   abstract public int getChildCount();
   abstract public AutoTreeNode getChildAt(int index);
   abstract public boolean isLeaf();
   abstract public int getIndex(AutoTreeNode node);
-  abstract public Enumeration<AutoTreeNode> children();
+  abstract public Enumeration<AutoTreeNode<?>> children();
   public boolean getAllowsChildren() { return false; }
   
-  public Iterator<AutoTreeNode> iterator()
+  protected AutoTreeNode(ValueProxy proxy)
+  {
+    this.proxy = proxy;
+  }
+  
+  protected void replaceMe(AutoTreeNode<?> newTree)
+  {
+    int index = parent.getIndex(this);
+    parent.remove(index);
+    parent.insert(newTree, index);
+  }
+  
+  public Iterator<AutoTreeNode<?>> iterator()
   { 
     throw new UnsupportedOperationException("Iteration is unsupported on node type '"+this.getClass().getCanonicalName()+"'"); 
   }
@@ -33,10 +49,7 @@ public abstract class AutoTreeNode implements MutableTreeNode, Iterable<AutoTree
   public void remove(int index) { }
   public void remove(MutableTreeNode node) { }
   public void insert(MutableTreeNode node, int index) { }
-  public void setUserObject(Object object) { System.out.println(object.getClass()); }
-  
-  public boolean isEditable() { return false; }
-  
+    
   public boolean isExtensible() { return false; }
   
   public void clear()
@@ -49,4 +62,13 @@ public abstract class AutoTreeNode implements MutableTreeNode, Iterable<AutoTree
     throw new UnsupportedOperationException("addElement() is unsupported on node type '"+this.getClass().getCanonicalName()+"'"); 
 
   }
+  
+  public T getValue() { return proxy.get(); }
+  void setValue(T value) { proxy.set(value); }
+  
+  @Override
+  @SuppressWarnings("unchecked")
+  public void setUserObject(Object object) { setValue((T)object); }
+  
+  public boolean isEditable() { return proxy.isEditable(); }
 }

@@ -2,22 +2,10 @@ package com.jack.autotree.nodes;
 
 import com.jack.autotree.proxies.ValueProxy;
 
-public abstract class PrimitiveNode<T> extends LeafNode
-{
-  final ValueProxy proxy;
-  
+public abstract class PrimitiveNode<T> extends LeafNode<T>
+{  
   PrimitiveNode(ValueProxy proxy)
   {
-    this.proxy = proxy;
+    super(proxy);
   }
-  
-  public T getValue() { return proxy.get(); }
-  void setValue(T value) { proxy.set(value); }
-  
-  @Override
-  @SuppressWarnings("unchecked")
-  public void setUserObject(Object object) { setValue((T)object); }
-  
-  @Override
-  public boolean isEditable() { return proxy.isEditable(); }
 }

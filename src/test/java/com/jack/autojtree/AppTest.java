@@ -43,18 +43,31 @@ public class AppTest
   }
   
   @Test
+  public void testModifyPrimitiveField()
+  {
+    AutoTreeBuilder builder = new AutoTreeBuilder();
+    Rectangle rect = new Rectangle(10,20,10,20);
+    TreeModel model = builder.generate(rect, Rectangle.class);
+
+    AutoTreeNode<?> root = (AutoTreeNode<?>)model.getRoot();
+    root.getChildAt(0).setUserObject(30);
+    
+    assertEquals(rect.x, 30);
+  }
+  
+  @Test
   public void testCompositeWithPrimitiveObject()
   {
     AutoTreeBuilder builder = new AutoTreeBuilder();
     TreeModel model = builder.generate(new Rectangle(10,20,10,20), Rectangle.class);
     
-    AutoTreeNode root = (AutoTreeNode)model.getRoot();
+    AutoTreeNode<?> root = (AutoTreeNode<?>)model.getRoot();
     
     assertNotNull(model.getRoot());
     assertEquals(model.getChildCount(root), 4);
     assertThat(root, instanceOf(InnerNode.class));
     
-    for (AutoTreeNode child : root)
+    for (AutoTreeNode<?> child : root)
       assertThat(child, instanceOf(IntegerNode.class));
   }
   
@@ -75,32 +88,20 @@ public class AppTest
     
     TreeModel model = builder.generate(rc, RectangleCouple.class);
     
-    AutoTreeNode root = (AutoTreeNode)model.getRoot();
+    AutoTreeNode<?> root = (AutoTreeNode<?>)model.getRoot();
     
     assertNotNull(model.getRoot());
     assertEquals(model.getChildCount(root), 2);
     assertThat(root, instanceOf(InnerNode.class));
     
-    for (AutoTreeNode child : root)
+    for (AutoTreeNode<?> child : root)
     {
       assertThat(child, instanceOf(InnerNode.class));
       assertEquals(child.getChildCount(), 4);
-      for (AutoTreeNode innerChild : child)
+      for (AutoTreeNode<?> innerChild : child)
       {
         assertThat(innerChild, instanceOf(IntegerNode.class));
       }
     }
-  }
-  
-  @Test
-  public void testCollectionList()
-  {
-    AutoTreeBuilder builder = new AutoTreeBuilder();
-    List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
-    TreeModel model = builder.generate(list, List.class); 
-    AutoTreeNode root = (AutoTreeNode)model.getRoot();
-
-    assertNotNull(model.getRoot());
-    assertEquals(model.getChildCount(root), 5);
   }
 }

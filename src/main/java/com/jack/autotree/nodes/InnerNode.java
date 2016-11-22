@@ -7,22 +7,25 @@ import java.util.Iterator;
 import java.util.List;
 import javax.swing.tree.MutableTreeNode;
 
-public class InnerNode extends AutoTreeNode implements Iterable<AutoTreeNode>
+import com.jack.autotree.proxies.ValueProxy;
+
+public class InnerNode<T> extends AutoTreeNode<T>
 {
-  protected final List<AutoTreeNode> children;
+  protected final List<AutoTreeNode<?>> children;
   protected Object object;
   protected String caption;
   
-  public InnerNode(Object object)
+  public InnerNode(ValueProxy proxy, Object object)
   {
+    super(proxy);
     this.object = object;
-    children = new ArrayList<AutoTreeNode>();
+    children = new ArrayList<>();
     
   }
   
-  public InnerNode(String caption, Object object)
+  public InnerNode(ValueProxy proxy, String caption, Object object)
   {
-    this(object);
+    this(proxy, object);
     this.caption = caption;
   }
   
@@ -50,13 +53,13 @@ public class InnerNode extends AutoTreeNode implements Iterable<AutoTreeNode>
     return -1;
   }
   
-  @Override public Iterator<AutoTreeNode> iterator()
+  @Override public Iterator<AutoTreeNode<?>> iterator()
   {
     return children.iterator();
   }
   
   @Override
-  public Enumeration<AutoTreeNode> children()
+  public Enumeration<AutoTreeNode<?>> children()
   {
     return Collections.enumeration(children);
   }
@@ -88,4 +91,6 @@ public class InnerNode extends AutoTreeNode implements Iterable<AutoTreeNode>
   {
     children.add(index, (AutoTreeNode)node);
   }
+  
+  public Object getObject() { return object; }
 }

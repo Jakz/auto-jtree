@@ -9,10 +9,10 @@ import com.jack.autotree.nodes.AutoTreeNode;
 import com.jack.autotree.nodes.InnerListNode;
 import com.jack.autotree.proxies.FieldProxy;
 import com.jack.autotree.proxies.ListProxy;
+import com.jack.autotree.proxies.ValueProxy;
 
 public class TreeBuilderList<T> extends TreeBuilderGeneric<List<T>, T>
 {
-  @SuppressWarnings("unchecked")
   public TreeBuilderList(Class<T> clazz)
   {
     super(clazz);
@@ -21,13 +21,9 @@ public class TreeBuilderList<T> extends TreeBuilderGeneric<List<T>, T>
   
   public AutoTreeNode build(List<T> source, AutoTreeContext context)
   {
-    InnerNode node = null;
-    
-    if (context.peek() instanceof FieldProxy)
-      node = new InnerListNode(((FieldProxy)context.peek()).mnemonic(), source, getClazz());
-    else
-      node = new InnerListNode(source, getClazz());
-    
+    ValueProxy proxy = context.peek();
+    InnerNode node = new InnerListNode(proxy, proxy.mnemonic(), source, getClazz());
+
     for (int i = 0; i < source.size(); ++i)
     {
       context.push(new ListProxy(context.peek(), i, true));

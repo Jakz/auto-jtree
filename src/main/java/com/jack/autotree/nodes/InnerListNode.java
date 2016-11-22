@@ -2,19 +2,22 @@ package com.jack.autotree.nodes;
 
 import java.util.List;
 
+import com.jack.autotree.builders.TreeBuilderList;
+import com.jack.autotree.proxies.ValueProxy;
+
 public class InnerListNode extends InnerNode
 {
   private final Class<?> clazz;
   
-  public InnerListNode(Object object, Class<?> clazz)
+  public InnerListNode(ValueProxy proxy, Object object, Class<?> clazz)
   {
-    super(object);
+    super(proxy, object);
     this.clazz = clazz;
   }
   
-  public InnerListNode(String caption, Object object, Class<?> clazz)
+  public InnerListNode(ValueProxy proxy, String caption, Object object, Class<?> clazz)
   {
-    super(caption, object);
+    super(proxy, caption, object);
     this.clazz = clazz;
   }
   
@@ -22,5 +25,20 @@ public class InnerListNode extends InnerNode
   {
     ((List<?>)object).clear();
     children.clear();
+  }
+  
+  @Override public void addElement(int index)
+  {
+    try
+    {
+      List data = (List)object;
+      data.add(index, clazz.newInstance());
+      // TODO:finish
+    }
+    catch (Exception e)
+    {
+      // check if it's instantiable and throw exception
+      e.printStackTrace();
+    }
   }
 }

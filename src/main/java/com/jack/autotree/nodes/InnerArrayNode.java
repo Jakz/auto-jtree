@@ -2,19 +2,21 @@ package com.jack.autotree.nodes;
 
 import java.lang.reflect.Array;
 
+import com.jack.autotree.proxies.ValueProxy;
+
 public class InnerArrayNode extends InnerNode
 {
   private final Class<?> clazz;
   
-  public InnerArrayNode(Object object, Class<?> clazz)
+  public InnerArrayNode(ValueProxy proxy, Object object, Class<?> clazz)
   {
-    super(object);
+    super(proxy, object);
     this.clazz = clazz;
   }
   
-  public InnerArrayNode(String caption, Object object, Class<?> clazz)
+  public InnerArrayNode(ValueProxy proxy, String caption, Object object, Class<?> clazz)
   {
-    super(caption, object);
+    super(proxy, caption, object);
     this.clazz = clazz;
   }
   

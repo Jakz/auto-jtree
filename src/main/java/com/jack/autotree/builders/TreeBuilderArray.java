@@ -19,16 +19,11 @@ public class TreeBuilderArray<T, K> extends TreeBuilderGeneric<T, K>
   @SuppressWarnings("unchecked")
   @Override
   public AutoTreeNode build(T source, AutoTreeContext context)
-  {
-    InnerNode node = null;
-    
-    ValueProxy proxy = !context.isEmpty() ? context.peek() : null;
+  {    
+    ValueProxy proxy = context.peek();
 
-    if (proxy instanceof FieldProxy)
-      node = new InnerArrayNode(proxy.mnemonic(), source, source.getClass());
-    else
-      node = new InnerArrayNode(source, source.getClass());
-    
+    InnerNode node = new InnerArrayNode(proxy, proxy.mnemonic(), source, source.getClass());
+
     K[] casted = (K[])(source);
     
     for (int i = 0; i < casted.length; ++i)

@@ -17,6 +17,6 @@ public class NullTreeBuilder<T> implements TreeBuilder<T>
   public AutoTreeNode build(T source, AutoTreeContext context)
   {
     ValueProxy proxy = context.peek();
-    return new NullNode(proxy.mnemonic(), clazz);
+    return new NullNode(proxy, proxy.mnemonic(), clazz);
   }
 }

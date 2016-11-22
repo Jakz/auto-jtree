@@ -37,11 +37,11 @@ public class TreeBuilderReflective<T> extends TreeBuilderGeneric<T, T>
         clazz = clazz.getSuperclass();
       }
           
-      ValueProxy parentProxy = !context.isEmpty() ? context.peek() : null;
+      ValueProxy parentProxy = context.peek();
 
       if (source != null)
       {
-        InnerNode node = new InnerNode(source);
+        InnerNode node = new InnerNode(parentProxy, source);
         while (!clazzes.isEmpty())
         {
           Class<?> currentClass = clazzes.pop();
@@ -78,7 +78,7 @@ public class TreeBuilderReflective<T> extends TreeBuilderGeneric<T, T>
       }
       else   
       {
-        return new NullNode(parentProxy != null ? parentProxy.mnemonic() : "", getClazz());
+        return new NullNode(parentProxy, parentProxy.mnemonic(), getClazz());
       }
     }
     catch (IllegalAccessException e)

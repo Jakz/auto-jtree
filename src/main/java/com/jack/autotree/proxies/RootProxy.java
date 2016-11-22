@@ -16,7 +16,7 @@ public class RootProxy extends ValueProxy
   @Override
   public <T> void set(T value)
   {
-
+    throw new UnsupportedOperationException("Unable to modify value of a root node.");
   }
 
   @Override
