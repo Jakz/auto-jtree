@@ -11,6 +11,6 @@ public class IntegerNode extends PrimitiveNode<Integer>
   
   public String mnemonic()
   {
-    return proxy.mnemonic()+": "+ Integer.valueOf(getValue());
+    return proxy.mnemonic() + ": " + Integer.valueOf(getValue());
   }
 }

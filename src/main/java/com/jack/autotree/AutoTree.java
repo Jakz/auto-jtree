@@ -10,6 +10,7 @@ import javax.swing.JTree;
 
 import com.jack.autotree.builders.*;
 import com.jack.autotree.nodes.AutoTreeNode;
+import com.jack.autotree.proxies.RootProxy;
 
 public class AutoTree extends JTree
 {
@@ -55,6 +56,7 @@ public class AutoTree extends JTree
   
   public <T> void generate(T o, Class<T> clazz)
   {
+    context.push(new RootProxy());
     setModel(new DefaultTreeModel(build(o, clazz), false));
   }
   

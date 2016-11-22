@@ -1,38 +1,32 @@
 package com.jack.autojtree;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import javax.swing.tree.TreeModel;
+
+import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
+
+import com.jack.autotree.AutoTree;
+
+import org.junit.BeforeClass;
 
 /**
  * Unit test for simple App.
  */
 public class AppTest 
-    extends TestCase
 {
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
-
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
-    }
+ 
+  @Test
+  public void testPrimitiveInt()
+  {
+    AutoTree tree = new AutoTree();
+    tree.generate(new Integer(10), Integer.class);
+    TreeModel model = tree.getModel();
+    
+    Object root = model.getRoot();
+    
+    assertNotNull(model.getRoot());
+    assertEquals(model.getChildCount(root), 0);
+  }
 }
