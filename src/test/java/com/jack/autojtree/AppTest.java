@@ -35,7 +35,7 @@ public class AppTest
     AutoTreeBuilder builder = new AutoTreeBuilder();
     TreeModel model = builder.generate(new Integer(10), Integer.class);
     
-    AutoTreeNode root = (AutoTreeNode)model.getRoot();
+    AutoTreeNode<?> root = (AutoTreeNode<?>)model.getRoot();
     
     assertNotNull(model.getRoot());
     assertEquals(model.getChildCount(root), 0);

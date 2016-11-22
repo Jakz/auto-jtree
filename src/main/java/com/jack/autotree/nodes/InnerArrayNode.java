@@ -26,11 +26,29 @@ public class InnerArrayNode extends InnerNode
     return true;
   }
   
-  public void extend(int index)
+  @Override public void addElement(int index)
   {
-    if (object == null)
+    if (!proxy.isEditable())
+      throw new UnsupportedOperationException("ArrayNode cannot be modified as its proxy is not editable");
+    
+    if (object != null)
     {
-      object = Array.newInstance(clazz.getComponentType(), 1);
+      Object[] array = (Object[])object;
+      Object[] newArray = (Object[])Array.newInstance(clazz.getComponentType(), array.length+1);
+      
+      if (index == 0)
+        System.arraycopy(array, 0, newArray, 1, array.length);
+      else if (index == array.length-1)
+        System.arraycopy(array, 0, newArray, 0, array.length);
+      else
+      {
+        System.arraycopy(array, 0, newArray, 0, index);
+        System.arraycopy(array, index, newArray, index+1, array.length - index);
+      }
+      
+      /* recreate node structure */ 
+      
+      proxy.set(newArray);
     }
   }
 }
