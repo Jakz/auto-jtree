@@ -5,6 +5,7 @@ import java.util.*;
 import javax.swing.*;
 
 import com.jack.autotree.AutoTree;
+import com.jack.autotree.tests.MapSurface.Deco;
 
 public class Main
 {
@@ -65,9 +66,14 @@ public class Main
 	{
 	  //Test test = new Test();
 	  MapSurface test = new MapSurface();
-
+	  
+	  MapSurface.Deco[] decos = new MapSurface.Deco[3];
+	  decos[0] = new MapSurface.Deco();
+	  decos[0].block = new Block();
+	  decos[0].block.name = "AAAA";
+	  
 	  AutoTree tree = new AutoTree();
-	  tree.generate(test, MapSurface.class);
+	  tree.generate(decos, MapSurface.Deco[].class);
 	  new TreeFrame(tree);
 	}
 	

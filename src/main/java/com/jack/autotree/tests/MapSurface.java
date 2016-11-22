@@ -6,7 +6,7 @@ public class MapSurface
 {
   public static class Deco
   {
-    public String block;
+    public Block block;
     public Block[] replacement;
     public float chance;
   }
@@ -77,5 +77,7 @@ public class MapSurface
       decoSurface[i] = new Deco();
       dress[i] = new Dress();
     }
+    
+    decoSurface[0].block = new Block();
   }
 }

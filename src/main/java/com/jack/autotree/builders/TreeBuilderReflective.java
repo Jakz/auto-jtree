@@ -24,7 +24,9 @@ public class TreeBuilderReflective<T> extends TreeBuilderGeneric<T, T>
   {
     Stack<Class<?>> clazzes = new Stack<Class<?>>();
     
-    Class<?> clazz = source.getClass();
+    System.out.println("reflective class: "+getClazz());
+    
+    Class<?> clazz = getClazz();//source.getClass();// getClazz();
     
     while (clazz != null)
     {
@@ -40,7 +42,8 @@ public class TreeBuilderReflective<T> extends TreeBuilderGeneric<T, T>
     {  
       while (!clazzes.isEmpty())
       {
-        Field[] fields = clazzes.pop().getDeclaredFields();
+        Class<?> currentClass = clazzes.pop();
+        Field[] fields = currentClass.getDeclaredFields();
 
         for (Field field : fields)
   	    {
@@ -49,8 +52,8 @@ public class TreeBuilderReflective<T> extends TreeBuilderGeneric<T, T>
   	      if ((field.getModifiers() & Modifier.STATIC) != 0)
   	        continue;
   	      
-  	      //if ((field.getModifiers() & Modifier.PUBLIC) == 0)
-  	      //  throw new IllegalAccessException("Field "+field.getName()+" of "+source.getClass().getName()+" must be public.");
+  	      if ((field.getModifiers() & Modifier.PUBLIC) == 0)
+  	        throw new IllegalAccessException("Field '"+field.getName()+"' of "+currentClass.getName()+" must be public.");
   	      
   	      System.out.println("Building "+field.getName());
   	      //if (field.get(source) != null) 
