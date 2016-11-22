@@ -7,6 +7,7 @@ import java.util.Stack;
 
 import com.jack.autotree.AutoTreeContext;
 import com.jack.autotree.nodes.InnerNode;
+import com.jack.autotree.nodes.NullNode;
 import com.jack.autotree.nodes.AutoTreeNode;
 import com.jack.autotree.proxies.*;
 
@@ -33,44 +34,51 @@ public class TreeBuilderReflective<T> extends TreeBuilderGeneric<T, T>
       clazzes.push(clazz);
       clazz = clazz.getSuperclass();
     }
-    
-    InnerNode node = new InnerNode(source);
-    
+        
     ValueProxy parentProxy = !context.isEmpty() ? context.peek() : null;
-    
+
     try
     {  
-      while (!clazzes.isEmpty())
+      if (source != null)
       {
-        Class<?> currentClass = clazzes.pop();
-        Field[] fields = currentClass.getDeclaredFields();
-
-        for (Field field : fields)
-  	    {
-  	      context.push(new FieldProxy(parentProxy, source, field));
-  	      
-  	      if ((field.getModifiers() & Modifier.STATIC) != 0)
-  	        continue;
-  	      
-  	      if ((field.getModifiers() & Modifier.PUBLIC) == 0)
-  	        throw new IllegalAccessException("Field '"+field.getName()+"' of "+currentClass.getName()+" must be public.");
-  	      
-  	      System.out.println("Building "+field.getName());
-  	      //if (field.get(source) != null) 
-  	      { 
-  	        AutoTreeNode tnode = context.build(field.get(source), field.getType());
-            node.add(tnode);
-  	      }
-  	      
-  	      context.pop();
-  	    }
+        InnerNode node = new InnerNode(source);
+        while (!clazzes.isEmpty())
+        {
+          Class<?> currentClass = clazzes.pop();
+          Field[] fields = currentClass.getDeclaredFields();
+  
+          for (Field field : fields)
+    	    {
+    	      context.push(new FieldProxy(parentProxy, source, field));
+    	      
+    	      if ((field.getModifiers() & Modifier.STATIC) != 0)
+    	        continue;
+    	      
+    	      if ((field.getModifiers() & Modifier.PUBLIC) == 0)
+    	        throw new IllegalAccessException("Field '"+field.getName()+"' of "+currentClass.getName()+" must be public.");
+    	      
+    	      System.out.println("Building "+field.getName());
+    	      //if (field.get(source) != null) 
+    	      { 
+    	        AutoTreeNode tnode = context.build(field.get(source), field.getType());
+    	        node.add(tnode);
+    	      }
+    	      
+    	      context.pop();
+    	    }
+        }
+        
+        return node;
+      }
+      else   
+      {
+        return new NullNode(parentProxy != null ? parentProxy.mnemonic() : "", getClazz());
       }
     }
     catch (IllegalAccessException e)
     {      
       e.printStackTrace();
+      return null;
     }
-
-    return node;
   }
 }

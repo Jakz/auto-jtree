@@ -34,7 +34,7 @@ public class TreeBuilderArray<T, K> extends TreeBuilderGeneric<T, K>
     for (int i = 0; i < casted.length; ++i)
     {
        context.push(new ArrayProxy(proxy, node, i, true));
-       node.add(context.build(casted[i], getClazz()));
+       node.add(context.build(casted[i], getClazz().getComponentType()));
        context.pop();
     }
     

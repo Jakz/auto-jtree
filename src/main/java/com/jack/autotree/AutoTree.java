@@ -60,7 +60,7 @@ public class AutoTree extends JTree
   
   private <T> AutoTreeNode build(T[] o, Class<T> clazz)
   {
-    Logger.logger.log("Generating array tree for "+clazz.getName()+"[]");
+    Logger.logger.log("Generating array tree for "+clazz.getCanonicalName());
     TreeBuilderArray<T[], T> builder = new TreeBuilderArray<>(clazz);
     return builder.build(o, context);
   }
@@ -79,7 +79,7 @@ public class AutoTree extends JTree
   
     if (nativeBuilder == null && o == null)
     {
-      Logger.logger.log("Generating null node for "+clazz.getName());
+      Logger.logger.log("Generating null node for "+clazz.getCanonicalName());
       return new NullTreeBuilder<T>(clazz).build(null, context);
     }
     else if (o != null && o.getClass().isArray())
@@ -92,7 +92,7 @@ public class AutoTree extends JTree
     }
     else
     {
-      Logger.logger.log("Generating reflective tree for "+clazz.getName());
+      Logger.logger.log("Generating reflective tree for "+clazz.getCanonicalName());
       
       TreeBuilder<?> builder = nativeBuilder;
       

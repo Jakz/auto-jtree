@@ -70,6 +70,7 @@ public class Main
 	  MapSurface.Deco[] decos = new MapSurface.Deco[3];
 	  decos[0] = new MapSurface.Deco();
 	  decos[0].block = new Block();
+	  decos[0].replacement = new Block[2];
 	  decos[0].block.name = "AAAA";
 	  
 	  AutoTree tree = new AutoTree();
