@@ -30,8 +30,14 @@ public class ArrayProxy extends ValueProxy
   @SuppressWarnings("unchecked")
   public <T> void set(T value)
   {
-    //((T[])parent.get())[index] = value;
-    ((T[])parentNode.getObject())[index] = value;
+    Object parent = parentNode.getObject();
+    Class<?> pclazz = parent.getClass();
+    Class<?> pcomponent = pclazz.getComponentType();
+    
+    if (pcomponent == Integer.TYPE)
+      ((int[])parent)[index] = (int)value;
+    else 
+      ((T[])parentNode.getObject())[index] = value;
   }
   
   public String mnemonic() { return "["+index+"]"; }

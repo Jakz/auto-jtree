@@ -16,6 +16,11 @@ public class AutoTreeContext
     proxies = new Stack<ValueProxy>();
   }
   
+  public Object instatiate(Class<?> clazz)
+  {
+    return generator.instantiate(clazz);
+  }
+  
   public <T> AutoTreeNode build(Object object, Class<T> clazz)
   {
     return generator.build(object, clazz);

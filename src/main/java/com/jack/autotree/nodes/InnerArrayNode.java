@@ -3,6 +3,7 @@ package com.jack.autotree.nodes;
 import java.lang.reflect.Array;
 
 import com.jack.autotree.AutoTreeBuilder;
+import com.jack.autotree.instancers.ArrayReflection;
 import com.jack.autotree.instancers.Instancer;
 import com.jack.autotree.proxies.ArrayProxy;
 import com.jack.autotree.proxies.ValueProxy;
@@ -49,21 +50,24 @@ public class InnerArrayNode<T> extends InnerNode<T[]>
     
     if (object != null)
     {
-      Object[] array = (Object[])object;
-      Object[] newArray = (Object[])Array.newInstance(clazz.getComponentType(), array.length+1);
+      int length = Array.getLength(object);
+      
+      Object array = object;
+      Object newArray = Array.newInstance(clazz.getComponentType(), length+1);
       
       if (index == 0)
-        System.arraycopy(array, 0, newArray, 1, array.length);
-      else if (index == array.length-1)
-        System.arraycopy(array, 0, newArray, 0, array.length);
+        System.arraycopy(array, 0, newArray, 1, length);
+      else if (index == length-1)
+        System.arraycopy(array, 0, newArray, 0, length);
       else
       {
         System.arraycopy(array, 0, newArray, 0, index);
-        System.arraycopy(array, index, newArray, index+1, array.length - index);
+        System.arraycopy(array, index, newArray, index+1, length - index);
       }
       
-      newArray[index] = Instancer.istantiate(clazz.getComponentType());
-      children.add(index, builder.build(newArray[index], clazz));
+      Object newValue = builder.instantiate(clazz.getComponentType());
+      Array.set(newArray, index, newValue);
+      children.add(index, builder.build(newValue, clazz));
       
       refreshObject(newArray);
     }
@@ -76,13 +80,15 @@ public class InnerArrayNode<T> extends InnerNode<T[]>
     
     if (object != null)
     {
-      Object[] array = (Object[])object;
-      Object[] newArray = (Object[])Array.newInstance(clazz.getComponentType(), array.length-1);
+      int length = Array.getLength(object);
+      
+      Object array = object;
+      Object newArray = Array.newInstance(clazz.getComponentType(), length-1);
 
       if (index > 0)
         System.arraycopy(array, 0, newArray, 0, index);
-      if (index < array.length - 1)
-        System.arraycopy(array, index + 1, newArray, index, array.length - index - 1);
+      if (index < length - 1)
+        System.arraycopy(array, index + 1, newArray, index, length - index - 1);
       
       children.remove(index);
       refreshObject(newArray);

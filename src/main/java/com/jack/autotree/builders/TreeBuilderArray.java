@@ -35,4 +35,20 @@ public class TreeBuilderArray<T, K> extends TreeBuilderGeneric<T, K>
     
     return node;
   }
+  
+  public AutoTreeNode build(int[] source, AutoTreeContext context)
+  {
+    ValueProxy proxy = context.peek();
+
+    InnerNode node = new InnerArrayNode(context.generator(), proxy, proxy.mnemonic(), source, source.getClass());
+
+    for (int i = 0; i < source.length; ++i)
+    {
+       context.push(new ArrayProxy(proxy, node, i, true));
+       node.add(context.build(source[i], Integer.TYPE));
+       context.pop();
+    }
+    
+    return node;
+  }
 }

@@ -1,5 +1,6 @@
 package com.jack.autotree;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ import com.jack.autotree.proxies.RootProxy;
 public class AutoTreeBuilder
 {
   final private Map<Class<?>, TreeBuilder<?>> builders;
-  final private Map<Class<?>, Instancer> instancers;
+  final private List<Instancer> instancers;
   final private AutoTreeContext context;
 
 
@@ -38,12 +39,16 @@ public class AutoTreeBuilder
     builders.put(Boolean.TYPE, new BooleanTreeBuilder());
     builders.put(Boolean.class, new BooleanTreeBuilder());
     builders.put(String.class, new StringTreeBuilder());
+    
+    instancers.add(Instancer.PRIMITIVE_INSTANCER);
+    instancers.add(Instancer.ARRAY_INSTANCER);
+    instancers.add(Instancer.DEFAULT_INSTANCER);
   }
   
   public AutoTreeBuilder()
   {
     builders = new HashMap<>();
-    instancers = new HashMap<>();
+    instancers = new ArrayList<>();
     
     registerStandardBuilders();
     
@@ -68,6 +73,13 @@ public class AutoTreeBuilder
     return builder.build(o, context);
   }
   
+  private AutoTreeNode build(int[] o)
+  {
+    Logger.logger.log("Generating int array tree");
+    TreeBuilderArray<Integer[], Integer> builder = new TreeBuilderArray<>(Integer.TYPE);
+    return builder.build(o, context);
+  }
+  
   private <T> AutoTreeNode build(List<T> o, Class<T> clazz)
   {
     TreeBuilderList<T> builder = new TreeBuilderList<>(clazz);
@@ -87,7 +99,17 @@ public class AutoTreeBuilder
     }
     else if (o != null && o.getClass().isArray())
     {
-      return build((T[])o, clazz);
+      Class<?> componentType = o.getClass().getComponentType();
+      
+      if (componentType.isPrimitive())
+      {
+        if (componentType == Integer.TYPE)
+          return build((int[])o);
+        else
+          return null;
+      }
+      else
+        return build((T[])o, clazz);
     }
     else if (o != null && List.class.isAssignableFrom(o.getClass()))
     {
@@ -108,4 +130,15 @@ public class AutoTreeBuilder
       return ((TreeBuilder<T>)builder).build((T)o, context);
     }
   }
+  
+  public Object instantiate(Class<?> clazz)
+  {
+    Object object = null;
+    
+    for (int i = 0; i < instancers.size() && object == null; ++i)
+      object = instancers.get(i).instantiate(clazz);
+    
+    return object;
+  }
+
 }
