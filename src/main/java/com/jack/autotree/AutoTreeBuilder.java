@@ -8,12 +8,14 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 
 import com.jack.autotree.builders.*;
+import com.jack.autotree.instancers.Instancer;
 import com.jack.autotree.nodes.AutoTreeNode;
 import com.jack.autotree.proxies.RootProxy;
 
 public class AutoTreeBuilder
 {
   final private Map<Class<?>, TreeBuilder<?>> builders;
+  final private Map<Class<?>, Instancer> instancers;
   final private AutoTreeContext context;
 
 
@@ -41,9 +43,16 @@ public class AutoTreeBuilder
   public AutoTreeBuilder()
   {
     builders = new HashMap<>();
+    instancers = new HashMap<>();
+    
     registerStandardBuilders();
     
     context = new AutoTreeContext(this);
+  }
+  
+  public <T> void registerBuilder(Class<T> clazz, TreeBuilder<T> builder)
+  {
+    builders.put(clazz, builder);
   }
   
   public <T> TreeModel generate(T o, Class<T> clazz)
@@ -66,7 +75,7 @@ public class AutoTreeBuilder
   }
   
   @SuppressWarnings("unchecked")
-  protected <T> AutoTreeNode build(Object o, Class<T> clazz)
+  public <T> AutoTreeNode build(Object o, Class<T> clazz)
   {
     //Class<?> clazz = o.getClass();
     TreeBuilder<?> nativeBuilder = builders.get(clazz);

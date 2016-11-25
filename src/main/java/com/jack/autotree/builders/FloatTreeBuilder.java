@@ -8,6 +8,6 @@ public class FloatTreeBuilder implements TreeBuilder<Float>
 {
   public AutoTreeNode build(Float source, AutoTreeContext context)
   {
-    return new FloatNode(context.peek());
+    return new FloatNode(context.generator(), context.peek());
   }
 }

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import javax.swing.tree.MutableTreeNode;
 
+import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.proxies.ValueProxy;
 
 public class InnerNode<T> extends AutoTreeNode<T>
@@ -15,17 +16,17 @@ public class InnerNode<T> extends AutoTreeNode<T>
   protected Object object;
   protected String caption;
   
-  public InnerNode(ValueProxy proxy, Object object)
+  public InnerNode(AutoTreeBuilder builder, ValueProxy proxy, Object object)
   {
-    super(proxy);
+    super(builder, proxy);
     this.object = object;
     children = new ArrayList<>();
     
   }
   
-  public InnerNode(ValueProxy proxy, String caption, Object object)
+  public InnerNode(AutoTreeBuilder builder, ValueProxy proxy, String caption, Object object)
   {
-    this(proxy, object);
+    this(builder, proxy, object);
     this.caption = caption;
   }
   

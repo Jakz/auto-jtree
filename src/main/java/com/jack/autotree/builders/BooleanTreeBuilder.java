@@ -8,6 +8,6 @@ public class BooleanTreeBuilder implements TreeBuilder<Boolean>
 {
   public AutoTreeNode build(Boolean source, AutoTreeContext context)
   {
-    return new BooleanNode(context.peek());
+    return new BooleanNode(context.generator(), context.peek());
   }
 }

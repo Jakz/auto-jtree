@@ -22,7 +22,7 @@ public class TreeBuilderArray<T, K> extends TreeBuilderGeneric<T, K>
   {    
     ValueProxy proxy = context.peek();
 
-    InnerNode node = new InnerArrayNode(proxy, proxy.mnemonic(), source, source.getClass());
+    InnerNode node = new InnerArrayNode(context.generator(), proxy, proxy.mnemonic(), source, source.getClass());
 
     K[] casted = (K[])(source);
     

@@ -1,12 +1,13 @@
 package com.jack.autotree.nodes;
 
+import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.proxies.ValueProxy;
 
 public class IntegerNode extends PrimitiveNode<Integer>
 {
-  public IntegerNode(ValueProxy proxy)
+  public IntegerNode(AutoTreeBuilder builder, ValueProxy proxy)
   {
-    super(proxy);
+    super(builder, proxy);
   }
   
   public String mnemonic()

@@ -8,6 +8,6 @@ public class ByteTreeBuilder implements TreeBuilder<Byte>
 {
   public AutoTreeNode build(Byte source, AutoTreeContext context)
   {
-    return new ByteNode(context.peek());
+    return new ByteNode(context.generator(), context.peek());
   }
 }

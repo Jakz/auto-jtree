@@ -8,6 +8,6 @@ public class DoubleTreeBuilder implements TreeBuilder<Double>
 {
   public AutoTreeNode build(Double source, AutoTreeContext context)
   {
-    return new DoubleNode(context.peek());
+    return new DoubleNode(context.generator(), context.peek());
   }
 }

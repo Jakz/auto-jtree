@@ -1,12 +1,13 @@
 package com.jack.autotree.nodes;
 
+import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.proxies.ValueProxy;
 
 public class FloatNode extends PrimitiveNode<Float>
 {
-  public FloatNode(ValueProxy proxy)
+  public FloatNode(AutoTreeBuilder builder, ValueProxy proxy)
   {
-    super(proxy);
+    super(builder, proxy);
   }
   
   public String mnemonic()

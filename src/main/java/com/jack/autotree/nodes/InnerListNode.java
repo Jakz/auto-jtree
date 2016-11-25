@@ -2,6 +2,7 @@ package com.jack.autotree.nodes;
 
 import java.util.List;
 
+import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.builders.TreeBuilderList;
 import com.jack.autotree.proxies.ValueProxy;
 
@@ -9,15 +10,15 @@ public class InnerListNode extends InnerNode
 {
   private final Class<?> clazz;
   
-  public InnerListNode(ValueProxy proxy, Object object, Class<?> clazz)
+  public InnerListNode(AutoTreeBuilder builder, ValueProxy proxy, Object object, Class<?> clazz)
   {
-    super(proxy, object);
+    super(builder, proxy, object);
     this.clazz = clazz;
   }
   
-  public InnerListNode(ValueProxy proxy, String caption, Object object, Class<?> clazz)
+  public InnerListNode(AutoTreeBuilder builder, ValueProxy proxy, String caption, Object object, Class<?> clazz)
   {
-    super(proxy, caption, object);
+    super(builder, proxy, caption, object);
     this.clazz = clazz;
   }
   

@@ -41,7 +41,7 @@ public class TreeBuilderReflective<T> extends TreeBuilderGeneric<T, T>
 
       if (source != null)
       {
-        InnerNode node = new InnerNode(parentProxy, source);
+        InnerNode node = new InnerNode(context.generator(), parentProxy, source);
         while (!clazzes.isEmpty())
         {
           Class<?> currentClass = clazzes.pop();
@@ -78,7 +78,7 @@ public class TreeBuilderReflective<T> extends TreeBuilderGeneric<T, T>
       }
       else   
       {
-        return new NullNode(parentProxy, parentProxy.mnemonic(), getClazz());
+        return new NullNode(context.generator(), parentProxy, parentProxy.mnemonic(), getClazz());
       }
     }
     catch (IllegalAccessException e)

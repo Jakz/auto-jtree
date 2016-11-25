@@ -8,6 +8,6 @@ public class IntegerTreeBuilder implements TreeBuilder<Integer>
 {
   public AutoTreeNode build(Integer source, AutoTreeContext context)
   {
-    return new IntegerNode(context.peek());
+    return new IntegerNode(context.generator(), context.peek());
   }
 }

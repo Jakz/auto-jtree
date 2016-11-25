@@ -10,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import javax.swing.tree.TreeModel;
 
@@ -28,13 +29,30 @@ public class TestArray
   @Rule
   public final ExpectedException exception = ExpectedException.none();
   
+  public static class IntegerArrayHolder
+  {
+    public Integer[] array;
+  }
+  
+  public Pair<AutoTreeNode<?>, IntegerArrayHolder> build(int... values)
+  {
+    IntegerArrayHolder holder = new IntegerArrayHolder();
+    holder.array = IntStream.of(values).boxed().toArray(i -> new Integer[i]);
+    
+    AutoTreeBuilder builder = new AutoTreeBuilder();
+    TreeModel model = builder.generate(holder, IntegerArrayHolder.class); 
+    AutoTreeNode<?> root = (AutoTreeNode<?> )model.getRoot();
+    
+    return new Pair<>(root, holder);
+  }
+  
   @Test
   public void testBuilding()
   {
     AutoTreeBuilder builder = new AutoTreeBuilder();
     Integer[] array = new Integer[]{ 1, 2, 3, 4, 5 };
     TreeModel model = builder.generate(array, Integer[].class); 
-    AutoTreeNode root = (AutoTreeNode)model.getRoot();
+    AutoTreeNode<?> root = (AutoTreeNode<?>)model.getRoot();
 
     assertNotNull(model.getRoot());
     assertThat(root, instanceOf(InnerArrayNode.class));
@@ -48,72 +66,80 @@ public class TestArray
     AutoTreeBuilder builder = new AutoTreeBuilder();
     Integer[] array = new Integer[]{ 1, 2, 3, 4, 5 };
     TreeModel model = builder.generate(array, Integer[].class); 
-    AutoTreeNode root = (AutoTreeNode)model.getRoot();
+    AutoTreeNode<?> root = (AutoTreeNode<?>)model.getRoot();
     
     root.getChildAt(1).setUserObject(10);
     
     assertEquals(array[1], new Integer(10));  
   }
-  
 
-  
   @Test
   public void testAddElementShouldFailForRootNodes()
   {
     AutoTreeBuilder builder = new AutoTreeBuilder();
     Integer[] array = new Integer[]{ 1, 2, 3, 4, 5 };
     TreeModel model = builder.generate(array, Integer[].class); 
-    AutoTreeNode root = (AutoTreeNode)model.getRoot();
+    AutoTreeNode<?> root = (AutoTreeNode<?> )model.getRoot();
     
     exception.expect(UnsupportedOperationException.class);
     root.addElement(0);
     //assertEquals();  
   }
-  
-  public static class IntegerArrayHolder
-  {
-    public Integer[] array;
-  }
-  
+    
   @Test
   public void testAddElementToBeginOfComponentArray()
   {
-    AutoTreeBuilder builder = new AutoTreeBuilder();
-    IntegerArrayHolder holder = new IntegerArrayHolder();
-    holder.array = new Integer[]{ 1, 2, 3, 4, 5 };
-    TreeModel model = builder.generate(holder, IntegerArrayHolder.class); 
-    AutoTreeNode root = (AutoTreeNode)model.getRoot();
-    
-    root.getChildAt(0).addElement(0);
-    assertArrayEquals(new Integer[]{ null, 1, 2, 3, 4, 5 }, holder.array);
+    Pair<AutoTreeNode<?>, IntegerArrayHolder> pair = build(1,2,3,4,5);
+
+    pair.first.getChildAt(0).addElement(0);
+    assertArrayEquals(new Integer[]{ 0, 1, 2, 3, 4, 5 }, pair.second.array);
     //assertEquals();  
   }
   
   @Test
   public void testAddElementToEndOfComponentArray()
   {
-    AutoTreeBuilder builder = new AutoTreeBuilder();
-    IntegerArrayHolder holder = new IntegerArrayHolder();
-    holder.array = new Integer[]{ 1, 2, 3, 4, 5 };
-    TreeModel model = builder.generate(holder, IntegerArrayHolder.class); 
-    AutoTreeNode root = (AutoTreeNode)model.getRoot();
-    
-    root.getChildAt(0).addElement(holder.array.length-1);
-    assertArrayEquals(new Integer[]{ 1, 2, 3, 4, 5, null }, holder.array);
-    //assertEquals();  
+    Pair<AutoTreeNode<?>, IntegerArrayHolder> pair = build(1,2,3,4,5);
+
+    pair.first.getChildAt(0).addElement(pair.second.array.length);
+    assertArrayEquals(new Integer[]{ 1, 2, 3, 4, 5, 0 }, pair.second.array);
   }
   
   @Test
   public void testAddElementInMiddleOfComponentArray()
   {
-    AutoTreeBuilder builder = new AutoTreeBuilder();
-    IntegerArrayHolder holder = new IntegerArrayHolder();
-    holder.array = new Integer[]{ 1, 2, 3, 4, 5 };
-    TreeModel model = builder.generate(holder, IntegerArrayHolder.class); 
-    AutoTreeNode root = (AutoTreeNode)model.getRoot();
-    
-    root.getChildAt(0).addElement(1);
-    assertArrayEquals(new Integer[]{ 1, null, 2, 3, 4, 5 }, holder.array);
-    //assertEquals();  
+    Pair<AutoTreeNode<?>, IntegerArrayHolder> pair = build(1,2,3,4,5);
+
+    pair.first.getChildAt(0).addElement(1);
+    assertArrayEquals(new Integer[]{ 1, 0, 2, 3, 4, 5 }, pair.second.array);
   }
+  
+  @Test
+  public void testRemoveElementToBeginOfComponentArray()
+  {
+    Pair<AutoTreeNode<?>, IntegerArrayHolder> pair = build(1,2,3,4,5);
+
+    pair.first.getChildAt(0).removeElement(0);
+    assertArrayEquals(new Integer[]{ 2, 3, 4, 5 }, pair.second.array);
+  }
+  
+  @Test
+  public void testRemoveElementToEndOfComponentArray()
+  {
+    Pair<AutoTreeNode<?>, IntegerArrayHolder> pair = build(1,2,3,4,5);
+
+    pair.first.getChildAt(0).removeElement(4);
+    assertArrayEquals(new Integer[]{ 1, 2, 3, 4 }, pair.second.array);
+  }
+  
+  @Test
+  public void testRemoveElementToMiddleOfComponentArray()
+  {
+    Pair<AutoTreeNode<?>, IntegerArrayHolder> pair = build(1,2,3,4,5);
+
+    pair.first.getChildAt(0).removeElement(3);
+    assertArrayEquals(new Integer[]{ 1, 2, 3, 5 }, pair.second.array);
+  }
+  
+  
 }

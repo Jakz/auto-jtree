@@ -8,6 +8,6 @@ public class CharacterTreeBuilder implements TreeBuilder<Character>
 {
   public AutoTreeNode build(Character source, AutoTreeContext context)
   {
-    return new CharacterNode(context.peek());
+    return new CharacterNode(context.generator(), context.peek());
   }
 }

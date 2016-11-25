@@ -1,12 +1,13 @@
 package com.jack.autotree.nodes;
 
+import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.proxies.ValueProxy;
 
 public class ByteNode extends PrimitiveNode<Byte>
 {
-  public ByteNode(ValueProxy proxy)
+  public ByteNode(AutoTreeBuilder builder, ValueProxy proxy)
   {
-    super(proxy);
+    super(builder, proxy);
   }
   
   public String mnemonic()

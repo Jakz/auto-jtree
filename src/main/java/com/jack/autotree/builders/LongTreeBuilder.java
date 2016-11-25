@@ -8,6 +8,6 @@ public class LongTreeBuilder implements TreeBuilder<Long>
 {
   public AutoTreeNode build(Long source, AutoTreeContext context)
   {
-    return new LongNode(context.peek());
+    return new LongNode(context.generator(), context.peek());
   }
 }

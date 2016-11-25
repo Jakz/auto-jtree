@@ -2,6 +2,7 @@ package com.jack.autotree.nodes;
 
 import javax.swing.tree.TreeNode;
 
+import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.proxies.ValueProxy;
 
 import javax.swing.tree.MutableTreeNode;
@@ -10,7 +11,8 @@ import java.util.Iterator;
 
 public abstract class AutoTreeNode<T> implements MutableTreeNode, Iterable<AutoTreeNode<?>>
 {
-  protected AutoTreeNode parent;
+  protected final AutoTreeBuilder builder;
+  protected InnerNode<?> parent;
   protected ValueProxy proxy;
   
   abstract public int getChildCount();
@@ -20,8 +22,9 @@ public abstract class AutoTreeNode<T> implements MutableTreeNode, Iterable<AutoT
   abstract public Enumeration<AutoTreeNode<?>> children();
   public boolean getAllowsChildren() { return false; }
   
-  protected AutoTreeNode(ValueProxy proxy)
+  protected AutoTreeNode(AutoTreeBuilder builder, ValueProxy proxy)
   {
+    this.builder = builder;
     this.proxy = proxy;
   }
   
@@ -40,7 +43,7 @@ public abstract class AutoTreeNode<T> implements MutableTreeNode, Iterable<AutoT
   abstract String mnemonic();
   public String toString() { return mnemonic(); }
   
-  @Override public void setParent(MutableTreeNode node) { this.parent = (AutoTreeNode)node; }
+  @Override public void setParent(MutableTreeNode node) { this.parent = (InnerNode<?>)node; }
   @Override public AutoTreeNode getParent() { return parent; }
   @Override public int getIndex(TreeNode node) { return getIndex((AutoTreeNode)node); }
   
@@ -60,7 +63,11 @@ public abstract class AutoTreeNode<T> implements MutableTreeNode, Iterable<AutoT
   public void addElement(int index)
   {
     throw new UnsupportedOperationException("addElement() is unsupported on node type '"+this.getClass().getCanonicalName()+"'"); 
-
+  }
+  
+  public void removeElement(int index)
+  {
+    throw new UnsupportedOperationException("removeElement() is unsupported on node type '"+this.getClass().getCanonicalName()+"'"); 
   }
   
   public T getValue() { return proxy.get(); }

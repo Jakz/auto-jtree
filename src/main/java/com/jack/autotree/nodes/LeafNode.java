@@ -2,13 +2,14 @@ package com.jack.autotree.nodes;
 
 import java.util.Enumeration;
 
+import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.proxies.ValueProxy;
 
 public abstract class LeafNode<T> extends AutoTreeNode<T>
 {
-  LeafNode(ValueProxy proxy)
+  LeafNode(AutoTreeBuilder builder, ValueProxy proxy)
   {
-    super(proxy);
+    super(builder, proxy);
   }
   
   @Override public int getChildCount() { return 0; }

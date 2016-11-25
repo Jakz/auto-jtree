@@ -36,5 +36,10 @@ public class AutoTreeContext
     return proxies.peek();
   }
   
+  public AutoTreeBuilder generator()
+  {
+    return generator;
+  }
+  
   public boolean isEmpty() { return proxies.isEmpty(); }
 }

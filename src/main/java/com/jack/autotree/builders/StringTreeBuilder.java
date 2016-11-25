@@ -8,6 +8,6 @@ public class StringTreeBuilder implements TreeBuilder<String>
 {
   public AutoTreeNode build(String source, AutoTreeContext context)
   {
-    return new StringNode(context.peek());
+    return new StringNode(context.generator(), context.peek());
   }
 }

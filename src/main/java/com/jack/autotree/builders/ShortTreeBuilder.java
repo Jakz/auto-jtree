@@ -8,6 +8,6 @@ public class ShortTreeBuilder implements TreeBuilder<Short>
 {
   public AutoTreeNode build(Short source, AutoTreeContext context)
   {
-    return new ShortNode(context.peek());
+    return new ShortNode(context.generator(), context.peek());
   }
 }

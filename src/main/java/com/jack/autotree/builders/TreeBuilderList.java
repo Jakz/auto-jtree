@@ -22,7 +22,7 @@ public class TreeBuilderList<T> extends TreeBuilderGeneric<List<T>, T>
   public AutoTreeNode build(List<T> source, AutoTreeContext context)
   {
     ValueProxy proxy = context.peek();
-    InnerNode node = new InnerListNode(proxy, proxy.mnemonic(), source, getClazz());
+    InnerNode node = new InnerListNode(context.generator(), proxy, proxy.mnemonic(), source, getClazz());
 
     for (int i = 0; i < source.size(); ++i)
     {
