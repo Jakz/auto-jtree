@@ -4,9 +4,11 @@ import java.util.List;
 
 import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.builders.TreeBuilderList;
+import com.jack.autotree.proxies.ArrayProxy;
+import com.jack.autotree.proxies.ListProxy;
 import com.jack.autotree.proxies.ValueProxy;
 
-public class InnerListNode extends InnerNode
+public class InnerListNode<T> extends InnerNode<List<T>>
 {
   private final Class<?> clazz;
   
@@ -22,18 +24,28 @@ public class InnerListNode extends InnerNode
     this.clazz = clazz;
   }
   
+  protected void rebuildIndices()
+  {
+    for (int i = 0; i < getChildCount(); ++i)
+      children.get(i).proxy = new ListProxy(proxy, parent, i, true);
+  }
+  
   @Override public void clear()
   {
     ((List<?>)object).clear();
     children.clear();
   }
   
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override public void addElement(int index)
   {
     try
     {
       List data = (List)object;
-      data.add(index, clazz.newInstance());
+      Object newObject = builder.instantiate(clazz);
+      data.add(index, newObject);
+      children.add(index, builder.build(newObject, clazz));
+      rebuildIndices();
       // TODO:finish
     }
     catch (Exception e)

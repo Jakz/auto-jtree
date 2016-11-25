@@ -26,7 +26,7 @@ public class TreeBuilderList<T> extends TreeBuilderGeneric<List<T>, T>
 
     for (int i = 0; i < source.size(); ++i)
     {
-      context.push(new ListProxy(context.peek(), i, true));
+      context.push(new ListProxy(context.peek(), node, i, true));
       node.add(context.build(source.get(i), getClazz()));
       context.pop();
     }

@@ -5,6 +5,7 @@ import java.util.*;
 import javax.swing.*;
 
 import com.jack.autotree.AutoTree;
+import com.jack.autotree.builders.ErasedType;
 import com.jack.autotree.tests.MapSurface.Deco;
 
 public class Main
@@ -64,6 +65,11 @@ public class Main
 	
 	public static void main(String[] args)
 	{
+    System.out.println(new ErasedType<List<String>>().toString());
+
+    if (true)
+      return;
+
 	  //Test test = new Test();
 	  MapSurface test = new MapSurface();
 	  
@@ -85,7 +91,7 @@ public class Main
 	  public JButton btAdd = new JButton("+");
 	  
 	  public TreeFrame(AutoTree tree)
-	  {
+	  {	    
 	    btAdd.addActionListener(e -> tree.extendElement(tree.getSelectionPath()));
 	    
 	    this.tree = tree;

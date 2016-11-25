@@ -1,5 +1,7 @@
 package com.jack.autotree.proxies;
 
+import java.lang.reflect.Array;
+
 import com.jack.autotree.nodes.InnerNode;
 
 public class ArrayProxy extends ValueProxy
@@ -30,14 +32,8 @@ public class ArrayProxy extends ValueProxy
   @SuppressWarnings("unchecked")
   public <T> void set(T value)
   {
-    Object parent = parentNode.getObject();
-    Class<?> pclazz = parent.getClass();
-    Class<?> pcomponent = pclazz.getComponentType();
-    
-    if (pcomponent == Integer.TYPE)
-      ((int[])parent)[index] = (int)value;
-    else 
-      ((T[])parentNode.getObject())[index] = value;
+    Object parent = parentNode.getObject();    
+    Array.set(parent, index, value);
   }
   
   public String mnemonic() { return "["+index+"]"; }
