@@ -1,33 +1,33 @@
 package com.jack.autotree;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.JTree;
 
-
-import com.jack.autotree.builders.*;
 import com.jack.autotree.nodes.AutoTreeNode;
-import com.jack.autotree.proxies.RootProxy;
+import com.jack.autotree.renderers.AutoNodeRenderer;
+import com.jack.autotree.renderers.TreeRendererDispatcher;
 
 public class AutoTree extends JTree
 {
   final private AutoTreeBuilder builder;
+  final private TreeRendererDispatcher renderer;
   
   public AutoTree()
   {
     super();
     
     builder = new AutoTreeBuilder();
+    renderer = new TreeRendererDispatcher();
+    
+    setModel(null);
+    setCellRenderer(renderer);
     setCellEditor(new AutoTreeCellEditor(this));
   }
     
   @Override
   public boolean isPathEditable(TreePath path)
   {
-    AutoTreeNode node = (AutoTreeNode)path.getLastPathComponent();
+    AutoTreeNode<?> node = (AutoTreeNode<?>)path.getLastPathComponent();
     
     return isEditable() && node.isEditable();
   }
@@ -39,10 +39,20 @@ public class AutoTree extends JTree
   
   public boolean extendElement(TreePath path)
   {
-    AutoTreeNode node = (AutoTreeNode)path.getLastPathComponent();
+    AutoTreeNode<?> node = (AutoTreeNode<?>)path.getLastPathComponent();
     
     System.out.println(path+" extensible: "+node.isExtensible());
     
     return true;
+  }
+  
+  public void registerRenderer(Class<?> clazz, AutoNodeRenderer renderer)
+  {
+    this.renderer.registerRenderer(clazz, renderer);
+  }
+  
+  public void registerHierarchyRenderer(Class<?> clazz, AutoNodeRenderer renderer)
+  {
+    this.renderer.registerHierarchyRenderer(clazz, renderer);
   }
 }

@@ -1,11 +1,13 @@
 package com.jack.autotree.tests;
 
 import java.awt.BorderLayout;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.*;
 import javax.swing.*;
 
 import com.jack.autotree.AutoTree;
-import com.jack.autotree.builders.ErasedType;
+import com.jack.autotree.builders.GenericType;
 import com.jack.autotree.tests.MapSurface.Deco;
 
 public class Main
@@ -62,16 +64,33 @@ public class Main
 	  public Triangle triangle = new Triangle();
 	  public MapSurface surface = new MapSurface();
 	}
+  
+  static class Erasure<T> {
+    public Class<?> type() { return getClass(); }
+    
+  }
 	
 	public static void main(String[] args)
 	{
-    System.out.println(new ErasedType<List<String>>().toString());
-
+	   try {
+	      for (UIManager.LookAndFeelInfo laf: UIManager.getInstalledLookAndFeels()) {
+	        if ("Nimbus".equals(laf.getName())) {
+	          UIManager.setLookAndFeel(laf.getClassName());
+	        }
+	      }
+	    } catch (ClassNotFoundException | InstantiationException
+	               | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+	      ex.printStackTrace();
+	    }
+	  
+	  /*GenericType foo = new GenericType(new Erasure<HashMap<Integer, String>>() {}.type());
+    System.out.println(foo);
+    
     if (true)
-      return;
+      return;*/
 
-	  //Test test = new Test();
-	  MapSurface test = new MapSurface();
+	  Test test = new Test();
+	  //MapSurface test = new MapSurface();
 	  
 	  MapSurface.Deco[] decos = new MapSurface.Deco[3];
 	  decos[0] = new MapSurface.Deco();
@@ -80,7 +99,9 @@ public class Main
 	  decos[0].block.name = "AAAA";
 	  
 	  AutoTree tree = new AutoTree();
-	  tree.generate(decos, MapSurface.Deco[].class);
+	  tree.registerRenderer(Float.class, new TestNodeRenderer());
+	  tree.registerRenderer(Float.TYPE, new TestNodeRenderer());
+	  tree.generate(test, Test.class);
 	  new TreeFrame(tree);
 	}
 	

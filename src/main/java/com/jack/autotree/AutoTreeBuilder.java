@@ -18,8 +18,7 @@ public class AutoTreeBuilder
   final private Map<Class<?>, TreeBuilder<?>> builders;
   final private List<Instancer> instancers;
   final private AutoTreeContext context;
-
-
+  
   private void registerStandardBuilders()
   {
     builders.put(Float.TYPE, new FloatTreeBuilder());
