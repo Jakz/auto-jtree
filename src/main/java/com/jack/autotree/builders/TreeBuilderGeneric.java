@@ -8,12 +8,7 @@ abstract class TreeBuilderGeneric<T,K> implements TreeBuilder<T>
   {
     return clazz;
   }
-  
-  protected void setClass(Class<K> clazz)
-  {
-    this.clazz = clazz;
-  }
-    
+
   protected TreeBuilderGeneric()
   {
   }
