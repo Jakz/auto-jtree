@@ -1,6 +1,7 @@
 package com.jack.autotree.instancers;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 
 public abstract class Instancer
@@ -49,10 +50,9 @@ public abstract class Instancer
       {
         return clazz.newInstance();
       }
-      catch (Exception e)
+      catch (InstantiationException|IllegalAccessException e)
       {
-        e.printStackTrace();
-        return null;
+        throw new UnsupportedOperationException("Class "+clazz.getCanonicalName()+" must provide a public default constructor");
       }
     }
   };

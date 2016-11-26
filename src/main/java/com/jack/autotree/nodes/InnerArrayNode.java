@@ -27,7 +27,12 @@ public class InnerArrayNode<T> extends InnerNode<T[]>
   @Override
   public boolean isExtensible()
   {
-    return true;
+    return true; //TODO: check annotation
+  }
+  
+  @Override public String mnemonic()
+  {
+    return caption + ": " + clazz.getComponentType().getSimpleName()+"["+getChildCount()+"]";
   }
   
   protected void refreshObject(Object object)

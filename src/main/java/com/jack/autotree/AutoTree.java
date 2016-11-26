@@ -1,5 +1,6 @@
 package com.jack.autotree;
 
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.JTree;
 
@@ -41,8 +42,20 @@ public class AutoTree extends JTree
   {
     AutoTreeNode<?> node = (AutoTreeNode<?>)path.getLastPathComponent();
     
-    System.out.println(path+" extensible: "+node.isExtensible());
+    if (node.isExtensible())
+      node.addElement(0);
+
+    boolean wasExpanded = isExpanded(path);
+    boolean wasSelected = isPathSelected(path);
     
+    ((DefaultTreeModel)getModel()).nodeStructureChanged(node);
+    
+    if (wasExpanded)
+      expandPath(path);
+    
+    if (wasSelected)
+      setSelectionPath(path);
+
     return true;
   }
   

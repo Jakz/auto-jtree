@@ -30,6 +30,12 @@ public class InnerListNode<T> extends InnerNode<List<T>>
       children.get(i).proxy = new ListProxy(proxy, parent, i, true);
   }
   
+  @Override
+  public boolean isExtensible()
+  {
+    return true;
+  }
+  
   @Override public void clear()
   {
     ((List<?>)object).clear();

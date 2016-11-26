@@ -38,7 +38,7 @@ public class Main
 	public static class Triangle
 	{
 	  public Point3D p1, p2, p3;
-	  Triangle()
+	  public Triangle()
 	  {
 	    p1 = new Point3D(10,20,30);
 	    p2 = new Point3D(20,20,30);
@@ -62,7 +62,7 @@ public class Main
 	{
 	  //public Shape shape = new Shape();
 	  public Triangle triangle = new Triangle();
-	  public MapSurface surface = new MapSurface();
+	  public Triangle[] data = new Triangle[0];
 	}
   
   static class Erasure<T> {
