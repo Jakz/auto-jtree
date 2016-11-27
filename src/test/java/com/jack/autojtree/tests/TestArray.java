@@ -1,14 +1,12 @@
-package com.jack.autojtree;
+package com.jack.autojtree.tests;
 
+import static com.jack.autojtree.tests.Helper.assertTreeEquals;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-
-import static com.jack.autojtree.Helper.assertTreeEquals;
-import com.jack.autojtree.Helper.ClassNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +19,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.jack.autojtree.tests.Helper.ClassNode;
 import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.nodes.AutoTreeNode;
 import com.jack.autotree.nodes.InnerArrayNode;

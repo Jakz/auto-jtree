@@ -23,14 +23,12 @@ public class ArrayProxy extends ValueProxy
     return parentNode;
   }
   
-  @SuppressWarnings("unchecked")
-  public <T> T get()
+  public Object get()
   {
-    return ((T[])parent.get())[index];
+    return Array.get(parent.get(), index);
   }
   
-  @SuppressWarnings("unchecked")
-  public <T> void set(T value)
+  public void set(Object value)
   {
     Object parent = parentNode.getObject();    
     Array.set(parent, index, value);

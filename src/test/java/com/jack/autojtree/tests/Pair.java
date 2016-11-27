@@ -1,4 +1,4 @@
-package com.jack.autojtree;
+package com.jack.autojtree.tests;
 
 public class Pair<F,S>
 {

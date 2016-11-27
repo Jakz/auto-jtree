@@ -1,4 +1,4 @@
-package com.jack.autojtree;
+package com.jack.autojtree.tests;
 
 import java.util.ArrayList;
 import java.util.Arrays;

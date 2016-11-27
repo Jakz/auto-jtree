@@ -73,9 +73,7 @@ public abstract class AutoTreeNode implements MutableTreeNode, Iterable<AutoTree
   public Object getValue() { return proxy.get(); }
   void setValue(Object value) { proxy.set(value); }
   
-  @Override
-  @SuppressWarnings("unchecked")
-  public void setUserObject(Object object) { setValue(object); }
+  @Override public void setUserObject(Object object) { setValue(object); }
   
   public boolean isEditable() { return proxy.isEditable(); }
 }

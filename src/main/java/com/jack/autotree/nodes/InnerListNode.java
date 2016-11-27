@@ -52,7 +52,6 @@ public class InnerListNode extends InnerNode
       data.add(index, newObject);
       children.add(index, builder.build(newObject, type.getTypeArgument(0)));
       rebuildIndices();
-      // TODO:finish
     }
     catch (Exception e)
     {
