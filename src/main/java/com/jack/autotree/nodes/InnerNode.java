@@ -10,9 +10,9 @@ import javax.swing.tree.MutableTreeNode;
 import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.proxies.ValueProxy;
 
-public class InnerNode<T> extends AutoTreeNode<T>
+public class InnerNode extends AutoTreeNode
 {
-  protected final List<AutoTreeNode<?>> children;
+  protected final List<AutoTreeNode> children;
   protected Object object;
   protected String caption;
   
@@ -54,13 +54,13 @@ public class InnerNode<T> extends AutoTreeNode<T>
     return -1;
   }
   
-  @Override public Iterator<AutoTreeNode<?>> iterator()
+  @Override public Iterator<AutoTreeNode> iterator()
   {
     return children.iterator();
   }
   
   @Override
-  public Enumeration<AutoTreeNode<?>> children()
+  public Enumeration<AutoTreeNode> children()
   {
     return Collections.enumeration(children);
   }

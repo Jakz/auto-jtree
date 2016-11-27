@@ -3,7 +3,7 @@ package com.jack.autotree.nodes;
 import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.proxies.ValueProxy;
 
-public class BooleanNode extends PrimitiveNode<Boolean>
+public class BooleanNode extends PrimitiveNode
 {
   public BooleanNode(AutoTreeBuilder builder, ValueProxy proxy)
   {
@@ -12,6 +12,6 @@ public class BooleanNode extends PrimitiveNode<Boolean>
   
   public String mnemonic()
   {
-    return proxy.mnemonic()+": "+Boolean.valueOf(getValue());
+    return proxy.mnemonic()+": "+Boolean.valueOf((Boolean)getValue());
   }
 }

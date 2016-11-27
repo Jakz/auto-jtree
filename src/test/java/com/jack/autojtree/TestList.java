@@ -18,6 +18,7 @@ import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.nodes.AutoTreeNode;
 import com.jack.autotree.nodes.InnerListNode;
 import com.jack.autotree.nodes.IntegerNode;
+import com.jack.autotree.types.GenericType;
 
 public class TestList
 {
@@ -26,7 +27,7 @@ public class TestList
   {
     AutoTreeBuilder builder = new AutoTreeBuilder();
     List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
-    TreeModel model = builder.generate(list, List.class); 
+    TreeModel model = builder.generate(list, new GenericType(List.class, Integer.class)); 
     AutoTreeNode root = (AutoTreeNode)model.getRoot();
 
     assertNotNull(model.getRoot());
@@ -40,7 +41,7 @@ public class TestList
   {
     AutoTreeBuilder builder = new AutoTreeBuilder();
     List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
-    TreeModel model = builder.generate(list, List.class); 
+    TreeModel model = builder.generate(list, new GenericType(List.class, Integer.class)); 
     AutoTreeNode root = (AutoTreeNode)model.getRoot();
     
     root.clear();
@@ -54,7 +55,7 @@ public class TestList
   {
     AutoTreeBuilder builder = new AutoTreeBuilder();
     List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
-    TreeModel model = builder.generate(list, List.class); 
+    TreeModel model = builder.generate(list, new GenericType(List.class, Integer.class)); 
     AutoTreeNode root = (AutoTreeNode)model.getRoot();
     
     root.getChildAt(1).setUserObject(10);

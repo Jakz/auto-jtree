@@ -4,24 +4,24 @@ import java.util.List;
 
 import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.builders.TreeBuilderList;
-import com.jack.autotree.proxies.ArrayProxy;
 import com.jack.autotree.proxies.ListProxy;
 import com.jack.autotree.proxies.ValueProxy;
+import com.jack.autotree.types.GenericType;
 
-public class InnerListNode<T> extends InnerNode<List<T>>
+public class InnerListNode extends InnerNode
 {
-  private final Class<?> clazz;
+  private final GenericType type;
   
-  public InnerListNode(AutoTreeBuilder builder, ValueProxy proxy, Object object, Class<?> clazz)
+  public InnerListNode(AutoTreeBuilder builder, ValueProxy proxy, Object object, GenericType type)
   {
     super(builder, proxy, object);
-    this.clazz = clazz;
+    this.type = type;
   }
   
-  public InnerListNode(AutoTreeBuilder builder, ValueProxy proxy, String caption, Object object, Class<?> clazz)
+  public InnerListNode(AutoTreeBuilder builder, ValueProxy proxy, String caption, Object object, GenericType type)
   {
     super(builder, proxy, caption, object);
-    this.clazz = clazz;
+    this.type = type;
   }
   
   protected void rebuildIndices()
@@ -48,9 +48,9 @@ public class InnerListNode<T> extends InnerNode<List<T>>
     try
     {
       List data = (List)object;
-      Object newObject = builder.instantiate(clazz);
+      Object newObject = builder.instantiate(type.getTypeArgument(0).get());
       data.add(index, newObject);
-      children.add(index, builder.build(newObject, clazz));
+      children.add(index, builder.build(newObject, type.getTypeArgument(0)));
       rebuildIndices();
       // TODO:finish
     }

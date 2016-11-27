@@ -35,7 +35,7 @@ public class AppTest
     AutoTreeBuilder builder = new AutoTreeBuilder();
     TreeModel model = builder.generate(new Integer(10), Integer.class);
     
-    AutoTreeNode<?> root = (AutoTreeNode<?>)model.getRoot();
+    AutoTreeNode root = (AutoTreeNode)model.getRoot();
     
     assertNotNull(model.getRoot());
     assertEquals(model.getChildCount(root), 0);
@@ -49,7 +49,7 @@ public class AppTest
     Rectangle rect = new Rectangle(10,20,10,20);
     TreeModel model = builder.generate(rect, Rectangle.class);
 
-    AutoTreeNode<?> root = (AutoTreeNode<?>)model.getRoot();
+    AutoTreeNode root = (AutoTreeNode)model.getRoot();
     root.getChildAt(0).setUserObject(30);
     
     assertEquals(rect.x, 30);
@@ -61,13 +61,13 @@ public class AppTest
     AutoTreeBuilder builder = new AutoTreeBuilder();
     TreeModel model = builder.generate(new Rectangle(10,20,10,20), Rectangle.class);
     
-    AutoTreeNode<?> root = (AutoTreeNode<?>)model.getRoot();
+    AutoTreeNode root = (AutoTreeNode)model.getRoot();
     
     assertNotNull(model.getRoot());
     assertEquals(model.getChildCount(root), 4);
     assertThat(root, instanceOf(InnerNode.class));
     
-    for (AutoTreeNode<?> child : root)
+    for (AutoTreeNode child : root)
       assertThat(child, instanceOf(IntegerNode.class));
   }
   
@@ -88,17 +88,17 @@ public class AppTest
     
     TreeModel model = builder.generate(rc, RectangleCouple.class);
     
-    AutoTreeNode<?> root = (AutoTreeNode<?>)model.getRoot();
+    AutoTreeNode root = (AutoTreeNode)model.getRoot();
     
     assertNotNull(model.getRoot());
     assertEquals(model.getChildCount(root), 2);
     assertThat(root, instanceOf(InnerNode.class));
     
-    for (AutoTreeNode<?> child : root)
+    for (AutoTreeNode child : root)
     {
       assertThat(child, instanceOf(InnerNode.class));
       assertEquals(child.getChildCount(), 4);
-      for (AutoTreeNode<?> innerChild : child)
+      for (AutoTreeNode innerChild : child)
       {
         assertThat(innerChild, instanceOf(IntegerNode.class));
       }

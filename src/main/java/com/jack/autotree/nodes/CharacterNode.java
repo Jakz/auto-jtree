@@ -3,7 +3,7 @@ package com.jack.autotree.nodes;
 import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.proxies.ValueProxy;
 
-public class CharacterNode extends PrimitiveNode<Character>
+public class CharacterNode extends PrimitiveNode
 {
   public CharacterNode(AutoTreeBuilder builder, ValueProxy proxy)
   {
@@ -12,6 +12,6 @@ public class CharacterNode extends PrimitiveNode<Character>
   
   public String mnemonic()
   {
-    return proxy.mnemonic()+": "+Character.valueOf(getValue());
+    return proxy.mnemonic()+": "+Character.valueOf((Character)getValue());
   }
 }

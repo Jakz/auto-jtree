@@ -4,6 +4,7 @@ import java.util.Stack;
 
 import com.jack.autotree.nodes.AutoTreeNode;
 import com.jack.autotree.proxies.ValueProxy;
+import com.jack.autotree.types.AutoType;
 
 public class AutoTreeContext
 {
@@ -21,9 +22,9 @@ public class AutoTreeContext
     return generator.instantiate(clazz);
   }
   
-  public <T> AutoTreeNode build(Object object, Class<T> clazz)
+  public <T> AutoTreeNode build(Object object, AutoType type)
   {
-    return generator.build(object, clazz);
+    return generator.build(object, type);
   }
   
   public void push(ValueProxy proxy)

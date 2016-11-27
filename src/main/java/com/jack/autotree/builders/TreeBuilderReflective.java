@@ -10,24 +10,23 @@ import com.jack.autotree.nodes.InnerNode;
 import com.jack.autotree.nodes.NullNode;
 import com.jack.autotree.nodes.AutoTreeNode;
 import com.jack.autotree.proxies.*;
+import com.jack.autotree.types.AutoType;
+import com.jack.autotree.types.GenericType;
+import com.jack.autotree.types.RawType;
 
-public class TreeBuilderReflective<T> extends TreeBuilderGeneric<T, T>
+public class TreeBuilderReflective extends TreeBuilderGeneric
 {	  
-  @SuppressWarnings("unchecked")
-  public TreeBuilderReflective(Class<T> clazz)
+  public TreeBuilderReflective()
   {
-    super(clazz);
-    //super.setClass((Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
   }
   
-  @SuppressWarnings("unchecked")
-  public AutoTreeNode build(T source, AutoTreeContext context)
+  public AutoTreeNode build(Object source, final AutoType type, AutoTreeContext context)
   {
     Stack<Class<?>> clazzes = new Stack<Class<?>>();
     
-    System.out.println("reflective class: "+getClazz());
+    System.out.println("reflective class: "+type);
     
-    Class<?> clazz = getClazz();//source.getClass();// getClazz();
+    Class<?> clazz = type.get();
     
     try
     {             
@@ -63,12 +62,22 @@ public class TreeBuilderReflective<T> extends TreeBuilderGeneric<T, T>
     	      if ((field.getModifiers() & Modifier.PUBLIC) == 0)
     	        throw new IllegalAccessException("Field '"+field.getName()+"' of "+currentClass.getName()+" must be public.");
     	      
-    	      System.out.println("Building "+field.getName());
-    	      //if (field.get(source) != null) 
-    	      { 
-    	        AutoTreeNode tnode = context.build(field.get(source), field.getType());
-    	        node.add(tnode);
+            System.out.println("Building "+field.getName());
+
+            AutoType ftype = null;
+            
+    	      if (field.getGenericType() instanceof ParameterizedType)
+    	      {
+    	        ParameterizedType pfield = (ParameterizedType)field.getGenericType();
+    	        ftype = new GenericType((Class<?>)pfield.getRawType(), pfield.getActualTypeArguments());
     	      }
+    	      else
+    	      {
+    	        ftype = new RawType(field.getType());
+    	      }
+
+    	      AutoTreeNode tnode = context.build(field.get(source), ftype);
+    	      node.add(tnode);
     	      
     	      context.pop();
     	    }
@@ -78,7 +87,8 @@ public class TreeBuilderReflective<T> extends TreeBuilderGeneric<T, T>
       }
       else   
       {
-        return new NullNode(context.generator(), parentProxy, parentProxy.mnemonic(), getClazz());
+        //TODO: verify if it's still needed
+        return new NullNode(context.generator(), parentProxy, parentProxy.mnemonic(), type);
       }
     }
     catch (IllegalAccessException e)

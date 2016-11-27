@@ -3,20 +3,18 @@ package com.jack.autotree.builders;
 import com.jack.autotree.AutoTreeContext;
 import com.jack.autotree.nodes.AutoTreeNode;
 import com.jack.autotree.proxies.ValueProxy;
+import com.jack.autotree.types.AutoType;
 import com.jack.autotree.nodes.*;
 
-public class NullTreeBuilder<T> implements TreeBuilder<T>
-{
-  private final Class<T> clazz;
-  
-  public NullTreeBuilder(Class<T> clazz)
+public class NullTreeBuilder implements TreeBuilder
+{  
+  public NullTreeBuilder()
   {
-    this.clazz = clazz;
   }
   
-  public AutoTreeNode build(T source, AutoTreeContext context)
+  public AutoTreeNode build(Object source, AutoType type, AutoTreeContext context)
   {
     ValueProxy proxy = context.peek();
-    return new NullNode(context.generator(), proxy, proxy.mnemonic(), clazz);
+    return new NullNode(context.generator(), proxy, proxy.mnemonic(), type);
   }
 }

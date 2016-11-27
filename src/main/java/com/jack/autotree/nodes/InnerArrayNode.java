@@ -3,12 +3,11 @@ package com.jack.autotree.nodes;
 import java.lang.reflect.Array;
 
 import com.jack.autotree.AutoTreeBuilder;
-import com.jack.autotree.instancers.ArrayReflection;
-import com.jack.autotree.instancers.Instancer;
 import com.jack.autotree.proxies.ArrayProxy;
 import com.jack.autotree.proxies.ValueProxy;
+import com.jack.autotree.types.RawType;
 
-public class InnerArrayNode<T> extends InnerNode<T[]>
+public class InnerArrayNode extends InnerNode
 {
   private final Class<?> clazz;
   
@@ -72,7 +71,7 @@ public class InnerArrayNode<T> extends InnerNode<T[]>
       
       Object newValue = builder.instantiate(clazz.getComponentType());
       Array.set(newArray, index, newValue);
-      children.add(index, builder.build(newValue, clazz));
+      children.add(index, builder.build(newValue, new RawType(clazz.getComponentType())));
       
       refreshObject(newArray);
     }

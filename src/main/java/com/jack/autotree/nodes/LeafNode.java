@@ -5,7 +5,7 @@ import java.util.Enumeration;
 import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.proxies.ValueProxy;
 
-public abstract class LeafNode<T> extends AutoTreeNode<T>
+public abstract class LeafNode extends AutoTreeNode
 {
   LeafNode(AutoTreeBuilder builder, ValueProxy proxy)
   {
@@ -16,5 +16,5 @@ public abstract class LeafNode<T> extends AutoTreeNode<T>
   @Override public AutoTreeNode getChildAt(int index) { return null; }
   @Override public boolean isLeaf() { return true; }
   @Override public int getIndex(AutoTreeNode node) { return -1; }
-  @Override public Enumeration<AutoTreeNode<?>> children() { return null; }
+  @Override public Enumeration<AutoTreeNode> children() { return null; }
 }

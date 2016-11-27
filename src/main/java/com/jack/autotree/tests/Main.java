@@ -7,7 +7,6 @@ import java.util.*;
 import javax.swing.*;
 
 import com.jack.autotree.AutoTree;
-import com.jack.autotree.builders.GenericType;
 import com.jack.autotree.tests.MapSurface.Deco;
 
 public class Main

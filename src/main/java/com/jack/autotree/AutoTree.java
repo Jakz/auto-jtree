@@ -28,7 +28,7 @@ public class AutoTree extends JTree
   @Override
   public boolean isPathEditable(TreePath path)
   {
-    AutoTreeNode<?> node = (AutoTreeNode<?>)path.getLastPathComponent();
+    AutoTreeNode node = (AutoTreeNode)path.getLastPathComponent();
     
     return isEditable() && node.isEditable();
   }
@@ -40,7 +40,7 @@ public class AutoTree extends JTree
   
   public boolean extendElement(TreePath path)
   {
-    AutoTreeNode<?> node = (AutoTreeNode<?>)path.getLastPathComponent();
+    AutoTreeNode node = (AutoTreeNode)path.getLastPathComponent();
     
     if (node.isExtensible())
       node.addElement(0);

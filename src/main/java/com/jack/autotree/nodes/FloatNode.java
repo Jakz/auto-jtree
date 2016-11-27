@@ -3,7 +3,7 @@ package com.jack.autotree.nodes;
 import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.proxies.ValueProxy;
 
-public class FloatNode extends PrimitiveNode<Float>
+public class FloatNode extends PrimitiveNode
 {
   public FloatNode(AutoTreeBuilder builder, ValueProxy proxy)
   {
@@ -12,6 +12,6 @@ public class FloatNode extends PrimitiveNode<Float>
   
   public String mnemonic()
   {
-    return proxy.mnemonic()+": "+Float.valueOf(getValue());
+    return proxy.mnemonic()+": "+Float.valueOf((Float)getValue());
   }
 }

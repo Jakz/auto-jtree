@@ -63,22 +63,23 @@ public class AutoTreeCellEditor extends DefaultTreeCellEditor
     public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row)
     {
       clazz = value.getClass();
+      AutoTreeNode node = (AutoTreeNode)value;
       
       if (value instanceof PrimitiveNode)
       {
         if (value instanceof BooleanNode)
         {
-          booleanBox.setSelectedItem(((PrimitiveNode<?>)value).getValue().toString());
+          booleanBox.setSelectedItem(node.getValue().toString());
           return booleanBox;
         }
         else if (value instanceof StringNode)
         {
-          field.setText(((StringNode)value).getValue());
+          field.setText((String)(node.getValue()));
           return field;
         }
         else
         {
-          field.setText(((PrimitiveNode<?>)value).getValue().toString());
+          field.setText(((PrimitiveNode)value).getValue().toString());
           return field;
         }
       }

@@ -28,7 +28,7 @@ public class TreeRendererDispatcher implements TreeCellRenderer
   @Override
   public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus)
   {
-    AutoTreeNode<?> node = (AutoTreeNode<?>)value;
+    AutoTreeNode node = (AutoTreeNode)value;
     Class<?> clazz = node.getValue() != null ? node.getValue().getClass() : null;
     System.out.println(clazz);
     AutoNodeRenderer renderer = renderers.get(clazz);

@@ -4,40 +4,94 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 
 import com.jack.autotree.builders.*;
+import com.jack.autotree.builders.array.TreeBuilderIntArray;
+import com.jack.autotree.builders.array.TreeBuilderObjectArray;
+import com.jack.autotree.builders.primitive.BooleanTreeBuilder;
+import com.jack.autotree.builders.primitive.ByteTreeBuilder;
+import com.jack.autotree.builders.primitive.CharacterTreeBuilder;
+import com.jack.autotree.builders.primitive.DoubleTreeBuilder;
+import com.jack.autotree.builders.primitive.FloatTreeBuilder;
+import com.jack.autotree.builders.primitive.IntegerTreeBuilder;
+import com.jack.autotree.builders.primitive.LongTreeBuilder;
+import com.jack.autotree.builders.primitive.ShortTreeBuilder;
+import com.jack.autotree.builders.primitive.StringTreeBuilder;
 import com.jack.autotree.instancers.Instancer;
 import com.jack.autotree.nodes.AutoTreeNode;
 import com.jack.autotree.proxies.RootProxy;
+import com.jack.autotree.types.AutoType;
+import com.jack.autotree.types.GenericType;
+import com.jack.autotree.types.RawType;
 
 public class AutoTreeBuilder
 {
-  final private Map<Class<?>, TreeBuilder<?>> builders;
+  final private Map<AutoType, TreeBuilder> builders;
+  final private Map<AutoType, TreeBuilder> inheritanceBuilders;
+  final private Map<AutoType, TreeBuilder> inheritanceCache;
+  final private TreeBuilder reflectiveBuilder;
   final private List<Instancer> instancers;
   final private AutoTreeContext context;
   
+  private void registerBuilder(Class<?> type, TreeBuilder builder)
+  {
+    builders.put(new RawType(type), builder);
+  }
+  
+  public void registerHierarchyBuilder(AutoType type, TreeBuilder builder)
+  {
+    inheritanceBuilders.put(type, builder);
+  }
+  
+  public TreeBuilder getBuilder(AutoType type)
+  {
+    TreeBuilder builder =  builders.getOrDefault(type, inheritanceCache.getOrDefault(type, null));
+    
+    if (builder == null)
+    {
+      Optional<Map.Entry<AutoType, TreeBuilder>> ibuilder = inheritanceBuilders.entrySet().stream().
+          filter( e -> type.isSubtypeOf(e.getKey())).findFirst();
+      
+      if (ibuilder.isPresent())
+      {
+        inheritanceCache.put(type, ibuilder.get().getValue());
+        return ibuilder.get().getValue();
+      }
+    }
+    else if (builder != null)
+      return builder;
+    
+    return reflectiveBuilder;
+  }
+  
   private void registerStandardBuilders()
   {
-    builders.put(Float.TYPE, new FloatTreeBuilder());
-    builders.put(Float.class, new FloatTreeBuilder());
-    builders.put(Double.TYPE, new DoubleTreeBuilder());
-    builders.put(Double.class, new DoubleTreeBuilder());
-    builders.put(Integer.TYPE, new IntegerTreeBuilder());
-    builders.put(Integer.class, new IntegerTreeBuilder());
-    builders.put(Byte.TYPE, new ByteTreeBuilder());
-    builders.put(Byte.class, new ByteTreeBuilder());
-    builders.put(Short.TYPE, new ShortTreeBuilder());
-    builders.put(Short.class, new ShortTreeBuilder());
-    builders.put(Character.TYPE, new CharacterTreeBuilder());
-    builders.put(Character.class, new CharacterTreeBuilder());
-    builders.put(Long.TYPE, new LongTreeBuilder());
-    builders.put(Long.class, new LongTreeBuilder());
-    builders.put(Boolean.TYPE, new BooleanTreeBuilder());
-    builders.put(Boolean.class, new BooleanTreeBuilder());
-    builders.put(String.class, new StringTreeBuilder());
+    registerBuilder(Float.TYPE, new FloatTreeBuilder());
+    registerBuilder(Float.class, new FloatTreeBuilder());
+    registerBuilder(Double.TYPE, new DoubleTreeBuilder());
+    registerBuilder(Double.class, new DoubleTreeBuilder());
+    registerBuilder(Integer.TYPE, new IntegerTreeBuilder());
+    registerBuilder(Integer.class, new IntegerTreeBuilder());
+    registerBuilder(Byte.TYPE, new ByteTreeBuilder());
+    registerBuilder(Byte.class, new ByteTreeBuilder());
+    registerBuilder(Short.TYPE, new ShortTreeBuilder());
+    registerBuilder(Short.class, new ShortTreeBuilder());
+    registerBuilder(Character.TYPE, new CharacterTreeBuilder());
+    registerBuilder(Character.class, new CharacterTreeBuilder());
+    registerBuilder(Long.TYPE, new LongTreeBuilder());
+    registerBuilder(Long.class, new LongTreeBuilder());
+    registerBuilder(Boolean.TYPE, new BooleanTreeBuilder());
+    registerBuilder(Boolean.class, new BooleanTreeBuilder());
+    registerBuilder(String.class, new StringTreeBuilder());
+    
+    registerHierarchyBuilder(new RawType(Object[].class), new TreeBuilderObjectArray());
+    registerBuilder(int[].class, new TreeBuilderIntArray());
+    
+    registerHierarchyBuilder(new RawType(List.class), new TreeBuilderList());
     
     instancers.add(Instancer.PRIMITIVE_INSTANCER);
     instancers.add(Instancer.ARRAY_INSTANCER);
@@ -47,6 +101,10 @@ public class AutoTreeBuilder
   public AutoTreeBuilder()
   {
     builders = new HashMap<>();
+    inheritanceBuilders = new HashMap<>();
+    inheritanceCache = new HashMap<>();
+    reflectiveBuilder = new TreeBuilderReflective();
+    
     instancers = new ArrayList<>();
     
     registerStandardBuilders();
@@ -54,17 +112,24 @@ public class AutoTreeBuilder
     context = new AutoTreeContext(this);
   }
   
-  public <T> void registerBuilder(Class<T> clazz, TreeBuilder<T> builder)
-  {
-    builders.put(clazz, builder);
-  }
-  
   public <T> TreeModel generate(T o, Class<T> clazz)
   {
-    context.push(new RootProxy());
-    return new DefaultTreeModel(build(o, clazz), false);
+    return generate(o, new RawType(clazz));
   }
   
+  public TreeModel generate(Object o, AutoType type)
+  {
+    context.push(new RootProxy());
+    return new DefaultTreeModel(build(o, type), false);
+  }
+  
+  public AutoTreeNode build(Object o, AutoType type)
+  {
+    TreeBuilder builder = getBuilder(type);
+    return builder.build(o, type, context);
+  }
+  
+  /*
   private <T> AutoTreeNode build(T[] o, Class<T> clazz)
   {
     Logger.logger.log("Generating array tree for "+clazz.getCanonicalName());
@@ -79,9 +144,9 @@ public class AutoTreeBuilder
     return builder.build(o, context);
   }
   
-  private <T> AutoTreeNode build(List<T> o, Class<T> clazz)
+  private <T> AutoTreeNode<?> build(List<?> o, GenericType type)
   {
-    TreeBuilderList<T> builder = new TreeBuilderList<>(clazz);
+    TreeBuilderList builder = new TreeBuilderList(type);
     return builder.build(o, context);
   }
   
@@ -89,7 +154,7 @@ public class AutoTreeBuilder
   public <T> AutoTreeNode build(Object o, Class<T> clazz)
   {
     //Class<?> clazz = o.getClass();
-    TreeBuilder<?> nativeBuilder = builders.get(clazz);
+    TreeBuilder nativeBuilder = builders.get(clazz);
   
     if (nativeBuilder == null && o == null)
     {
@@ -118,17 +183,17 @@ public class AutoTreeBuilder
     {
       Logger.logger.log("Generating reflective tree for "+clazz.getCanonicalName());
       
-      TreeBuilder<?> builder = nativeBuilder;
+      TreeBuilder builder = nativeBuilder;
       
       if (builder == null)
       {
-        builder = new TreeBuilderReflective<T>(clazz);
+        builder = new TreeBuilderReflective(clazz);
         builders.put(clazz, builder);
       }
               
       return ((TreeBuilder<T>)builder).build((T)o, context);
     }
-  }
+  }*/
   
   public Object instantiate(Class<?> clazz)
   {
