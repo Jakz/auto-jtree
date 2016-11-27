@@ -6,6 +6,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Stack;
 
 import com.jack.autotree.AutoTreeContext;
+import com.jack.autotree.annotations.Hidden;
 import com.jack.autotree.nodes.InnerNode;
 import com.jack.autotree.nodes.InnerObjectNode;
 import com.jack.autotree.nodes.NullNode;
@@ -63,7 +64,10 @@ public class TreeBuilderReflective extends TreeBuilderGeneric
     	      if ((field.getModifiers() & Modifier.PUBLIC) == 0)
     	        throw new IllegalAccessException("Field '"+field.getName()+"' of "+currentClass.getName()+" must be public.");
     	      
-            System.out.println("Building "+field.getName());
+    	      if (field.getAnnotation(Hidden.class) != null)
+    	        continue;
+    	      
+            //System.out.println("Building "+field.getName());
 
             AutoType ftype = null;
             

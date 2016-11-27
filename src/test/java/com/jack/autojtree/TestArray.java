@@ -7,7 +7,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import static com.jack.autojtree.Helper.assertEquals;
+import static com.jack.autojtree.Helper.assertTreeEquals;
 import com.jack.autojtree.Helper.ClassNode;
 
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public class TestArray
     AutoTreeNode root = (AutoTreeNode)model.getRoot();
 
     assertNotNull(root);
-    assertEquals(root, new ClassNode(InnerArrayNode.class, IntegerNode.class, 5));
+    assertTreeEquals(root, new ClassNode(InnerArrayNode.class, IntegerNode.class, 5));
   }
 
   @Test
@@ -152,7 +152,7 @@ public class TestArray
     AutoTreeNode root = (AutoTreeNode)model.getRoot();
     
     assertNotNull(root);
-    assertEquals(root, new ClassNode(InnerArrayNode.class, IntegerNode.class, 5));
+    assertTreeEquals(root, new ClassNode(InnerArrayNode.class, IntegerNode.class, 5));
   }
   
   @Test
@@ -185,9 +185,9 @@ public class TestArray
     root.getChildAt(0).addElement(0);
     
     assertArrayEquals(holder.array, new int[] { 0, 1, 2, 3, 4, 5}); 
-    assertEquals(root, new ClassNode(
+    assertTreeEquals(root, new ClassNode(
         InnerObjectNode.class, 
-        new ClassNode(InnerArrayNode.class, IntegerNode.class, 5)));
+        new ClassNode(InnerArrayNode.class, IntegerNode.class, 6)));
   }
   
   @Test
@@ -215,7 +215,7 @@ public class TestArray
     
     assertNotNull(root);
     
-    assertEquals(root, new ClassNode(
+    assertTreeEquals(root, new ClassNode(
         InnerArrayNode.class, 
         new ClassNode(InnerArrayNode.class, IntegerNode.class, 5), 2));
   }

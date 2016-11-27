@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 import com.jack.autotree.nodes.AutoTreeNode;
 import com.jack.autotree.nodes.InnerArrayNode;
 import com.jack.autotree.nodes.InnerObjectNode;
@@ -54,20 +56,13 @@ public class Helper
     }
   }
   
-  public static boolean assertEquals(AutoTreeNode node, ClassNode tree)
+  
+  public static void assertTreeEquals(AutoTreeNode node, ClassNode tree)
   {
-    boolean valid = node.getChildCount() == tree.children.length &&
-        node.getClass() == tree.clazz;
-    
-    if (valid)
-    {
-      for (int i = 0; i < node.getChildCount(); ++i)
-        if (!assertEquals(node.getChildAt(i), tree.children[i]))
-          return false;
-      
-      return true;
-    }
-    
-    return false;
+    assertEquals(node.getChildCount(), tree.children.length);
+    assertEquals(node.getClass(), tree.clazz);
+
+    for (int i = 0; i < node.getChildCount(); ++i)
+      assertTreeEquals(node.getChildAt(i), tree.children[i]);
   }
 }

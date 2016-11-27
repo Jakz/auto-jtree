@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import static com.jack.autojtree.Helper.assertEquals;
+import static com.jack.autojtree.Helper.assertTreeEquals;
 import com.jack.autojtree.Helper.ClassNode;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class TestList
     AutoTreeNode root = (AutoTreeNode)model.getRoot();
 
     assertNotNull(root);
-    assertEquals(root, new ClassNode(InnerListNode.class, IntegerNode.class, 5));
+    assertTreeEquals(root, new ClassNode(InnerListNode.class, IntegerNode.class, 5));
   }
   
   @Test

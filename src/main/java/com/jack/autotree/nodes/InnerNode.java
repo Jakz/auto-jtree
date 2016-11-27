@@ -42,7 +42,7 @@ public abstract class InnerNode extends AutoTreeNode
   
   @Override public boolean isLeaf()
   {
-    return false;
+    return children.isEmpty();
   }
   
   @Override public int getIndex(AutoTreeNode node)
