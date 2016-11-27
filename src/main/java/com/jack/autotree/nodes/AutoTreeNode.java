@@ -70,6 +70,11 @@ public abstract class AutoTreeNode implements MutableTreeNode, Iterable<AutoTree
     throw new UnsupportedOperationException("removeElement() is unsupported on node type '"+this.getClass().getCanonicalName()+"'"); 
   }
   
+  public void modifyElement(int index, Object value)
+  {
+    throw new UnsupportedOperationException("modifyElement() is unsupported on node type '"+this.getClass().getCanonicalName()+"'"); 
+  }
+  
   public Object getValue() { return proxy.get(); }
   void setValue(Object value) { proxy.set(value); }
   

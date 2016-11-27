@@ -1,12 +1,12 @@
 package com.jack.autotree.tests;
 
-import java.awt.BorderLayout;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 import javax.swing.*;
 
 import com.jack.autotree.AutoTree;
+import com.jack.autotree.AutoTreeFrame;
 import com.jack.autotree.tests.MapSurface.Deco;
 
 public class Main
@@ -101,30 +101,6 @@ public class Main
 	  tree.registerRenderer(Float.class, new TestNodeRenderer());
 	  tree.registerRenderer(Float.TYPE, new TestNodeRenderer());
 	  tree.generate(test, Test.class);
-	  new TreeFrame(tree);
-	}
-	
-	public static class TreeFrame extends JFrame
-	{
-	  public AutoTree tree;
-	  public JScrollPane pane;
-	  public JButton btAdd = new JButton("+");
-	  
-	  public TreeFrame(AutoTree tree)
-	  {	    
-	    btAdd.addActionListener(e -> tree.extendElement(tree.getSelectionPath()));
-	    
-	    this.tree = tree;
-	    tree.setEditable(true);
-	    pane = new JScrollPane(tree);
-	    pane.setPreferredSize(new java.awt.Dimension(800,800));
-	    setLayout(new BorderLayout());
-	    add(pane, BorderLayout.CENTER);
-	    add(btAdd, BorderLayout.SOUTH);
-	    pack();
-	    this.setLocationRelativeTo(null);
-	    setVisible(true);
-	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	  }
+	  new AutoTreeFrame(tree);
 	}
 }

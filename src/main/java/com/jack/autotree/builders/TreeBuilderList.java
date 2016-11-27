@@ -18,16 +18,19 @@ public class TreeBuilderList extends TreeBuilderGeneric
   @Override public AutoTreeNode build(Object object, AutoType type, AutoTreeContext context)
   {
     List<?> source = (List<?>)object;
+    ValueProxy proxy = context.peek();
     GenericType gtype = (GenericType)type;
 
-    ValueProxy proxy = context.peek();
     InnerListNode node = new InnerListNode(context.generator(), proxy, proxy.mnemonic(), source, gtype);
-
-    for (int i = 0; i < source.size(); ++i)
+    
+    if (source != null)
     {
-      context.push(new ListProxy(context.peek(), node, i, true));
-      node.add(context.build(source.get(i), gtype.getTypeArgument(0)));
-      context.pop();
+      for (int i = 0; i < source.size(); ++i)
+      {
+        context.push(new ListProxy(context.peek(), node, i, true));
+        node.add(context.build(source.get(i), gtype.getTypeArgument(0)));
+        context.pop();
+      }
     }
     
     return node;

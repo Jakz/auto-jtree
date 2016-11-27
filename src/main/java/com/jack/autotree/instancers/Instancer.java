@@ -56,4 +56,14 @@ public abstract class Instancer
       }
     }
   };
+  
+  public static Instancer ENUM_INSTANCER = new Instancer() {
+    @Override public Object instantiate(Class<?> clazz)
+    {
+      if (clazz.isEnum())
+        return clazz.getEnumConstants()[0];
+      else
+        return null;
+    }
+  };
 }

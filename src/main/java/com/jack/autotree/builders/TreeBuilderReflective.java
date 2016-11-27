@@ -62,13 +62,12 @@ public class TreeBuilderReflective extends TreeBuilderGeneric
     	        continue;
     	      
     	      if ((field.getModifiers() & Modifier.PUBLIC) == 0)
-    	        throw new IllegalAccessException("Field '"+field.getName()+"' of "+currentClass.getName()+" must be public.");
+    	        continue;
+    	        //throw new IllegalAccessException("Field '"+field.getName()+"' of "+currentClass.getName()+" must be public.");
     	      
     	      if (field.getAnnotation(Hidden.class) != null)
     	        continue;
     	      
-            //System.out.println("Building "+field.getName());
-
             AutoType ftype = null;
             
     	      if (field.getGenericType() instanceof ParameterizedType)

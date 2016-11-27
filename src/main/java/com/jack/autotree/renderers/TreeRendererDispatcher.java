@@ -9,20 +9,17 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
 import com.jack.autotree.nodes.AutoTreeNode;
+import com.jack.autotree.types.RawType;
+import com.jack.autotree.types.TypeMapper;
 
 public class TreeRendererDispatcher implements TreeCellRenderer
 {
-  private final Map<Class<?>, AutoNodeRenderer> renderers;
-  private final Map<Class<?>, AutoNodeRenderer> inheritanceCache;
-  private final Map<Class<?>, AutoNodeRenderer> inheritanceRenderers;
-  private final DefaultTreeCellRenderer baseRenderer;
-  
+  private final TypeMapper<RawType, AutoNodeRenderer> renderers;
+    
   public TreeRendererDispatcher()
   {
-    renderers = new HashMap<>();
-    inheritanceRenderers = new HashMap<>();
-    inheritanceCache = new HashMap<>();
-    baseRenderer = new DefaultTreeCellRenderer();
+    renderers = new TypeMapper<>();
+    renderers.setDefault(new WrapperNodeRenderer(new DefaultTreeCellRenderer()));
   }
 
   @Override
@@ -30,34 +27,18 @@ public class TreeRendererDispatcher implements TreeCellRenderer
   {
     AutoTreeNode node = (AutoTreeNode)value;
     Class<?> clazz = node.getValue() != null ? node.getValue().getClass() : null;
-    System.out.println(clazz);
-    AutoNodeRenderer renderer = renderers.get(clazz);
-    if (renderer != null)
-      return renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-    
-    renderer = inheritanceCache.get(clazz);
-    if (renderer != null)
-      return renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-    
-     for (Map.Entry<Class<?>, AutoNodeRenderer> entry : inheritanceRenderers.entrySet())
-     {
-       if (entry.getKey().isAssignableFrom(clazz))
-       {
-         inheritanceCache.put(clazz, entry.getValue());
-         return entry.getValue().getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-       }
-     }
+    AutoNodeRenderer renderer = renderers.get(clazz != null ? new RawType(clazz) : null);
 
-     return baseRenderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+     return renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
   }
   
   public void registerRenderer(Class<?> clazz, AutoNodeRenderer renderer)
   {
-    renderers.put(clazz, renderer);
+    renderers.register(new RawType(clazz), renderer);
   }
   
   public void registerHierarchyRenderer(Class<?> clazz, AutoNodeRenderer renderer)
   {
-    inheritanceRenderers.put(clazz, renderer);
+    renderers.registerHierarchy(new RawType(clazz), renderer);
   }
 }
