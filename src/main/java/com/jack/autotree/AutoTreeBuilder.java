@@ -10,8 +10,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 
 import com.jack.autotree.builders.*;
-import com.jack.autotree.builders.array.TreeBuilderIntArray;
 import com.jack.autotree.builders.array.TreeBuilderObjectArray;
+import com.jack.autotree.builders.array.TreeBuilderPrimitiveArray;
 import com.jack.autotree.builders.primitive.BooleanTreeBuilder;
 import com.jack.autotree.builders.primitive.ByteTreeBuilder;
 import com.jack.autotree.builders.primitive.CharacterTreeBuilder;
@@ -89,7 +89,15 @@ public class AutoTreeBuilder
     registerBuilder(String.class, new StringTreeBuilder());
     
     registerHierarchyBuilder(new RawType(Object[].class), new TreeBuilderObjectArray());
-    registerBuilder(int[].class, new TreeBuilderIntArray());
+    registerBuilder(boolean[].class, new TreeBuilderPrimitiveArray(Boolean.TYPE));
+    registerBuilder(byte[].class, new TreeBuilderPrimitiveArray(Byte.TYPE));
+    registerBuilder(short[].class, new TreeBuilderPrimitiveArray(Short.TYPE));
+    registerBuilder(char[].class, new TreeBuilderPrimitiveArray(Character.TYPE));
+    registerBuilder(int[].class, new TreeBuilderPrimitiveArray(Integer.TYPE));
+    registerBuilder(long[].class, new TreeBuilderPrimitiveArray(Long.TYPE));
+    registerBuilder(float[].class, new TreeBuilderPrimitiveArray(Float.TYPE));
+    registerBuilder(double[].class, new TreeBuilderPrimitiveArray(Double.TYPE));
+
     
     registerHierarchyBuilder(new RawType(List.class), new TreeBuilderList());
     

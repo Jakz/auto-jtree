@@ -7,7 +7,7 @@ import com.jack.autotree.proxies.ValueProxy;
 
 public abstract class LeafNode extends AutoTreeNode
 {
-  LeafNode(AutoTreeBuilder builder, ValueProxy proxy)
+  public LeafNode(AutoTreeBuilder builder, ValueProxy proxy)
   {
     super(builder, proxy);
   }

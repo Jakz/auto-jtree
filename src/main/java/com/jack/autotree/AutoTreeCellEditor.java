@@ -7,6 +7,16 @@ import java.awt.*;
 import java.awt.event.*;
 
 import com.jack.autotree.nodes.*;
+import com.jack.autotree.nodes.primitive.BooleanNode;
+import com.jack.autotree.nodes.primitive.ByteNode;
+import com.jack.autotree.nodes.primitive.CharacterNode;
+import com.jack.autotree.nodes.primitive.DoubleNode;
+import com.jack.autotree.nodes.primitive.FloatNode;
+import com.jack.autotree.nodes.primitive.IntegerNode;
+import com.jack.autotree.nodes.primitive.LongNode;
+import com.jack.autotree.nodes.primitive.PrimitiveNode;
+import com.jack.autotree.nodes.primitive.ShortNode;
+import com.jack.autotree.nodes.primitive.StringNode;
 
 public class AutoTreeCellEditor extends DefaultTreeCellEditor
 {

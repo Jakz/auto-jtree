@@ -12,24 +12,25 @@ import com.jack.autotree.types.RawType;
 import java.lang.reflect.Array;
 import java.lang.reflect.ParameterizedType;
 
-public class TreeBuilderIntArray extends TreeBuilderGeneric
+public class TreeBuilderPrimitiveArray extends TreeBuilderGeneric
 {
-  public TreeBuilderIntArray()
+  private final Class<?> componentType;
+  
+  public TreeBuilderPrimitiveArray(Class<?> componentType)
   {
+    this.componentType = componentType;
   }
   
   @Override
   public AutoTreeNode build(Object object, AutoType type, AutoTreeContext context)
   {
-    int[] source = (int[]) object;
     ValueProxy proxy = context.peek();
-
-    InnerNode node = new InnerArrayNode(context.generator(), proxy, proxy.mnemonic(), source, source.getClass());
-
-    for (int i = 0; i < source.length; ++i)
+    InnerNode node = new InnerArrayNode(context.generator(), proxy, proxy.mnemonic(), object, object.getClass());
+    
+    for (int i = 0; i < Array.getLength(object); ++i)
     {
        context.push(new ArrayProxy(proxy, node, i, true));
-       node.add(context.build(source[i], new RawType(Integer.TYPE)));
+       node.add(context.build(Array.get(object, i), new RawType(componentType)));
        context.pop();
     }
     

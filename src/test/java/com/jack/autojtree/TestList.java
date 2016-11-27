@@ -17,7 +17,7 @@ import org.junit.Test;
 import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.nodes.AutoTreeNode;
 import com.jack.autotree.nodes.InnerListNode;
-import com.jack.autotree.nodes.IntegerNode;
+import com.jack.autotree.nodes.primitive.IntegerNode;
 import com.jack.autotree.types.GenericType;
 
 public class TestList

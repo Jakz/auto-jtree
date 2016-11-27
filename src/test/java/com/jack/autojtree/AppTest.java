@@ -19,7 +19,7 @@ import com.jack.autotree.AutoTree;
 import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.nodes.AutoTreeNode;
 import com.jack.autotree.nodes.InnerNode;
-import com.jack.autotree.nodes.IntegerNode;
+import com.jack.autotree.nodes.primitive.IntegerNode;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;

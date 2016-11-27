@@ -40,7 +40,7 @@ public abstract class AutoTreeNode implements MutableTreeNode, Iterable<AutoTree
     throw new UnsupportedOperationException("Iteration is unsupported on node type '"+this.getClass().getCanonicalName()+"'"); 
   }
   
-  abstract String mnemonic();
+  public abstract String mnemonic();
   public String toString() { return mnemonic(); }
   
   @Override public void setParent(MutableTreeNode node) { this.parent = (InnerNode)node; }

@@ -1,4 +1,4 @@
-package com.jack.autotree.nodes;
+package com.jack.autotree.nodes.primitive;
 
 import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.proxies.ValueProxy;
