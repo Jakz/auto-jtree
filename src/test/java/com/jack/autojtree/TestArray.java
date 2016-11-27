@@ -7,6 +7,9 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import static com.jack.autojtree.Helper.assertEquals;
+import com.jack.autojtree.Helper.ClassNode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +25,7 @@ import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.nodes.AutoTreeNode;
 import com.jack.autotree.nodes.InnerArrayNode;
 import com.jack.autotree.nodes.InnerListNode;
+import com.jack.autotree.nodes.InnerObjectNode;
 import com.jack.autotree.nodes.primitive.IntegerNode;
 
 public class TestArray
@@ -54,10 +58,8 @@ public class TestArray
     TreeModel model = builder.generate(array, Integer[].class); 
     AutoTreeNode root = (AutoTreeNode)model.getRoot();
 
-    assertNotNull(model.getRoot());
-    assertThat(root, instanceOf(InnerArrayNode.class));
-    assertEquals(root.getChildCount(), 5);
-    assertThat(root.getChildAt(0), instanceOf(IntegerNode.class));
+    assertNotNull(root);
+    assertEquals(root, new ClassNode(InnerArrayNode.class, IntegerNode.class, 5));
   }
 
   @Test
@@ -149,10 +151,8 @@ public class TestArray
     TreeModel model = builder.generate(array, int[].class); 
     AutoTreeNode root = (AutoTreeNode)model.getRoot();
     
-    assertNotNull(model.getRoot());
-    assertThat(root, instanceOf(InnerArrayNode.class));
-    assertEquals(root.getChildCount(), 5);
-    assertThat(root.getChildAt(0), instanceOf(IntegerNode.class));
+    assertNotNull(root);
+    assertEquals(root, new ClassNode(InnerArrayNode.class, IntegerNode.class, 5));
   }
   
   @Test
@@ -184,7 +184,10 @@ public class TestArray
     
     root.getChildAt(0).addElement(0);
     
-    assertArrayEquals(holder.array, new int[] { 0, 1, 2, 3, 4, 5});  
+    assertArrayEquals(holder.array, new int[] { 0, 1, 2, 3, 4, 5}); 
+    assertEquals(root, new ClassNode(
+        InnerObjectNode.class, 
+        new ClassNode(InnerArrayNode.class, IntegerNode.class, 5)));
   }
   
   @Test
@@ -210,14 +213,11 @@ public class TestArray
     AutoTreeNode root = (AutoTreeNode)model.getRoot();
     AutoTreeNode child = (AutoTreeNode)root.getChildAt(0);
     
-    assertNotNull(model.getRoot());
-    assertThat(root, instanceOf(InnerArrayNode.class));
+    assertNotNull(root);
     
-    assertEquals(root.getChildCount(), 2);
-    assertThat(root.getChildAt(0), instanceOf(InnerArrayNode.class));
-    
-    assertEquals(child.getChildCount(), 5);
-    assertThat(child.getChildAt(0), instanceOf(IntegerNode.class));
+    assertEquals(root, new ClassNode(
+        InnerArrayNode.class, 
+        new ClassNode(InnerArrayNode.class, IntegerNode.class, 5), 2));
   }
   
   public static class PrimitiveBidimensionalIntHolder

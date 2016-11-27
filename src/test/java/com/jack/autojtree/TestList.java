@@ -6,6 +6,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import static com.jack.autojtree.Helper.assertEquals;
+import com.jack.autojtree.Helper.ClassNode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,10 +33,8 @@ public class TestList
     TreeModel model = builder.generate(list, new GenericType(List.class, Integer.class)); 
     AutoTreeNode root = (AutoTreeNode)model.getRoot();
 
-    assertNotNull(model.getRoot());
-    assertThat(root, instanceOf(InnerListNode.class));
-    assertEquals(model.getChildCount(root), 5);
-    assertThat(root.getChildAt(0), instanceOf(IntegerNode.class));
+    assertNotNull(root);
+    assertEquals(root, new ClassNode(InnerListNode.class, IntegerNode.class, 5));
   }
   
   @Test

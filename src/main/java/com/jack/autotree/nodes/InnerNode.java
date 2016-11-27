@@ -10,7 +10,7 @@ import javax.swing.tree.MutableTreeNode;
 import com.jack.autotree.AutoTreeBuilder;
 import com.jack.autotree.proxies.ValueProxy;
 
-public class InnerNode extends AutoTreeNode
+public abstract class InnerNode extends AutoTreeNode
 {
   protected final List<AutoTreeNode> children;
   protected Object object;

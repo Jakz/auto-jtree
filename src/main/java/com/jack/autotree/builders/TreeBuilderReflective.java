@@ -7,6 +7,7 @@ import java.util.Stack;
 
 import com.jack.autotree.AutoTreeContext;
 import com.jack.autotree.nodes.InnerNode;
+import com.jack.autotree.nodes.InnerObjectNode;
 import com.jack.autotree.nodes.NullNode;
 import com.jack.autotree.nodes.AutoTreeNode;
 import com.jack.autotree.proxies.*;
@@ -40,7 +41,7 @@ public class TreeBuilderReflective extends TreeBuilderGeneric
 
       if (source != null)
       {
-        InnerNode node = new InnerNode(context.generator(), parentProxy, source);
+        InnerNode node = new InnerObjectNode(context.generator(), parentProxy, source);
         while (!clazzes.isEmpty())
         {
           Class<?> currentClass = clazzes.pop();
